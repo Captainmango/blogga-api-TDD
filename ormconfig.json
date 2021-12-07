@@ -1,0 +1,21 @@
+{
+    "name": "default",
+    "type": "sqlite",
+    "username": "test",
+    "password": "",
+    "database": "database.sqlite",
+    "synchronize": true,
+    "logging": false,
+    "entities": [
+       "app/src/database/entities/**/*.ts"
+    ],
+    "migrations": [
+       "src/migration/**/*.ts"
+    ],
+    "cli": {
+        "entitiesDir": "app/src/database/entities",
+        "migrationsDir": "app/src/database/migrations"
+    },
+    "seeds": ["app/src/database/seeders/**/*{.ts,.js}"],
+    "factories": ["app/src/database/factories/**/*{.ts,.js}"]
+ }
