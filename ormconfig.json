@@ -1,11 +1,10 @@
 {
     "name": "default",
     "type": "sqlite",
-    "username": "test",
-    "password": "",
     "database": "database.sqlite",
-    "synchronize": true,
-    "logging": false,
+    "synchronize": false,
+    "dropSchema": false,
+    "logging": true,
     "entities": [
        "app/src/database/entities/**/*.ts"
     ],

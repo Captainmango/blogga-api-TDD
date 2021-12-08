@@ -10,6 +10,6 @@ define(Post, (faker: typeof Faker) => {
     post.title =  title
     post.body = body
     return post
-  })
+})
 
 
