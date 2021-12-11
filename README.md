@@ -25,6 +25,6 @@ It seems like someone has implemented some tests for you already in PostControll
 
 
 ## Helpful resources
-* [https://github.com/typeorm/typeorm](TypeORM - look here to understand migrations)
-* [https://expressjs.com/en/guide/routing.html](Express - look here to work out how to make controllers and use express)
+* [https://github.com/typeorm/typeorm] (TypeORM - look here to understand migrations)
+* [https://expressjs.com/en/guide/routing.html] (Express - look here to work out how to make controllers and use express)
 []
