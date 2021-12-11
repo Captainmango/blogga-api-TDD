@@ -1,10 +1,10 @@
 import { Seeder, Factory } from "typeorm-seeding"
 import { Connection } from "typeorm"
-import { Post } from "../entities/Post"
+import { Comment } from "../entities/Comment"
 import 'reflect-metadata'
 
 export default class CreatePosts implements Seeder {
     public async run(factory: Factory, connection: Connection): Promise<any> {
-      await factory(Post)().createMany(10)
+      await factory(Comment)().createMany(10)
     }
 }
