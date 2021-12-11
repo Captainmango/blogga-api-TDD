@@ -6,7 +6,7 @@ import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateCol
 export class Post {
 
     @PrimaryGeneratedColumn()
-    id?: number;
+    id!: number;
 
     @Column({
         length: 75

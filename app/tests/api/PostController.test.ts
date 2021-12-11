@@ -3,9 +3,10 @@ import { Express } from 'express-serve-static-core'
 import 'reflect-metadata'
 import { createServer } from '../../src/utils/server'
 import { Connection, getConnection, createConnection, createConnections } from 'typeorm'
-import { runSeeder, tearDownDatabase, useRefreshDatabase, useSeeding } from 'typeorm-seeding'
+import { factory, runSeeder, tearDownDatabase, useRefreshDatabase, useSeeding } from 'typeorm-seeding'
 import CreatePosts from '../../src/database/seeders/create-posts.seed'
 import connection, { dbEnvs } from '../../src/utils/db'
+import { Post } from '../../src/database/entities/Post'
 
 let server: Express
 
@@ -25,7 +26,7 @@ beforeEach(async () => {
     await connection.clear(dbEnvs.test)
 })
 
-
+/** Example test for a generic home route */
 it("GET / has an index route", async () => {
     const res = await request(server).get("/")
     expect(res.status).toEqual(200);
@@ -36,18 +37,77 @@ it("GET / has an index route", async () => {
 describe("POSTS API ENDPOINTS", () => {
 
     it("GET /posts has an index route", async () => {
+        const posts: Post[] = await factory(Post)().createMany(2)
         const res = await request(server).get("/posts")
         expect(res.ok)
         expect(res.type).toEqual(expect.stringContaining('json'))
-        expect(res.body).toHaveProperty('posts')
+        expect(res.body.posts[0].title).toBe(posts[0].title)
+        expect(res.body.posts).toHaveLength(2)
     })
 
-    it.todo("GET /posts/{post_id} is able to retrieve a single post")
+    it("GET /posts/{post_id} is able to retrieve a single post", async () => {
+        const post: Post = await factory(Post)().create()
+        const res = await request(server).get(`/posts/${post.id}`)
+        expect(res.ok)
+        expect(res.type).toEqual(expect.stringContaining('json'))
+        expect(res.body).toMatchObject(post)
+    })
 
-    it.todo("PATCH /posts/{post_id} is able to update a post")
+    it("GET /posts/{post_id} returns 404 if there is no post at the id", async () => {
+        const res = await request(server).get("/posts/2003")
+        expect(res.notFound)
+        expect(res.type).toEqual(expect.stringContaining('json'))
+    })
 
-    it.todo("DELETE /posts/{post_id} is able to delete a posts")
+    it("PATCH /posts/{post_id} is able to update a post", async () => {
+        const post: Post[] = await factory(Post)().createMany(4)
+        const res = await request(server)
+            .patch(`/posts/${post[2].id}`)
+            .send({
+                title: "This is the new title",
+                body: "This is the body of the post"
+            })
+        expect(res.statusCode).toBe(200)
+        expect(res.body).toMatchObject(post[2])
+    })
 
-    it.todo("POST /posts is able to create a new post")
+    it("PATCH /posts/{post_id} returns resource not found if there is no post at the id", async () => {
+        const res = await request(server).get("/posts/2003")
+        expect(res.notFound)
+        expect(res.type).toEqual(expect.stringContaining('json'))
+    })
+
+    it("PATCH /posts/{post_id} returns unprocessable entity if incorrect data is sent in the body", async () => {
+        const post: Post[] = await factory(Post)().createMany(4)
+        const res = await request(server)
+            .patch(`/posts/${post[2].id}`)
+            .send({
+                someRandomProperty: "This is the body of the post"
+            })
+        expect(res.statusCode).toBe(422)
+    })
+
+    it("DELETE /posts/{post_id} is able to delete a posts", async () => {
+        const post: Post[] = await factory(Post)().createMany(4)
+        const res = await request(server).delete(`/posts/${post[3].id}`)
+        expect(res.noContent)
+    })
+
+    it("DELETE /posts/{post_id} returns 404 if post doesn't exist", async () => {
+        const post: Post[] = await factory(Post)().createMany(4)
+        const res = await request(server).delete(`/posts/${post[3].id}`)
+        expect(res.notFound)
+    })
+
+    it("POST /posts is able to create a new post", async () => {
+        const res = await request(server).post("/posts")
+            .send({
+                title: "My awesome new post",
+                body: "Some lorem I guess?"
+            })
+        expect(res.statusCode).toBe(204)
+        expect(res.body).toHaveProperty("title")
+        expect(res.body.title).toBe("My awesome new post")
+    })
 })
 

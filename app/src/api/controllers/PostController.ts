@@ -4,7 +4,7 @@ import { Post } from '../../database/entities/Post';
 import { PostRepository } from '../repositories/PostRepository';
 
 export const postController: express.Router = express.Router();
-postController.use(express.json())
+postController.use()
 
 
 // put the index route here
