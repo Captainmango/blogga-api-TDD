@@ -10,9 +10,14 @@ It seems like someone has implemented some tests for you already in PostControll
 
 ## Acceptance Criteria
 ### Manage Posts
-
+- [ ] CRUD operations can be done on posts
+- [ ] There are responses when incorrect params are sent
+- [ ] There are no 500 errors returned from any routes
 
 ### Manage Comments
+- [ ] CRUD operations can be done on comments
+- [ ] There are responses when incorrect params are sent
+- [ ] There are no 500 errors returned from any routes
 
 
 ### Data Relationships
@@ -20,6 +25,6 @@ It seems like someone has implemented some tests for you already in PostControll
 
 
 ## Helpful resources
-[https://github.com/typeorm/typeorm](TypeORM - look here to understand decorators and db setup)
-[https://expressjs.com/en/guide/routing.html](Express - look here to work out how to make controllers and use express)
-[https://www.npmjs.com/package/typeorm-seeding](TypeORM seeder - look at how to create seeders)
+* [https://github.com/typeorm/typeorm](TypeORM - look here to understand migrations)
+* [https://expressjs.com/en/guide/routing.html](Express - look here to work out how to make controllers and use express)
+[]

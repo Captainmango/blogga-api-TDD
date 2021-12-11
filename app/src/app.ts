@@ -1,6 +1,6 @@
 import { createServer } from './utils/server'
 import 'reflect-metadata'
-import connection, { dbEnvs } from './utils/db'
+import connection from './utils/db'
 
 connection.create();
 
