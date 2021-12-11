@@ -6,8 +6,8 @@
       "password": "",
       "database": "database.sqlite",
       "synchronize": false,
-      "dropSchema": true,
-      "logging": true,
+      "dropSchema": false,
+      "logging": false,
       "migrationsRun": true,
       "entities": [
          "app/src/database/entities/**/*.ts"
