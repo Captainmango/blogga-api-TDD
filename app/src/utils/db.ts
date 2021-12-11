@@ -1,12 +1,35 @@
-import { Connection, createConnection, getConnection } from 'typeorm';
-import 'reflect-metadata'
-import { runSeeder, useSeeding } from 'typeorm-seeding';
-import CreatePosts from '../database/seeders/create-posts.seed';
+import {createConnection, createConnections, getConnection} from 'typeorm';
 
-export async function createDatabase(): Promise<void>
-{
-    await createConnection()
-    await useSeeding()
-    await runSeeder(CreatePosts)
+export enum dbEnvs {
+  dev = "default",
+  test = "test"
 }
 
+const connection = {
+  async create(){
+    await createConnection()
+  },
+
+  async createAll(){
+      await createConnections()
+  },
+
+  get(env: dbEnvs){
+    getConnection(env)
+  },
+
+  async close(env: dbEnvs){
+    await getConnection(env).close() 
+  },
+
+  async clear(env: dbEnvs){
+    const connection = getConnection()
+    const entities = connection.entityMetadatas
+
+    entities.forEach(async (entity) => {
+      const repository = connection.getRepository(entity.name)
+      await repository.query(`DELETE FROM ${entity.tableName}`)
+    })
+  },
+}
+export default connection;

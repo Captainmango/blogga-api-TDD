@@ -1,7 +1,6 @@
 import * as express from 'express';
 import { getCustomRepository, getRepository } from 'typeorm';
 import { Post } from '../../database/entities/Post';
-import connection, { dbEnvs } from '../../utils/connection';
 import { PostRepository } from '../repositories/PostRepository';
 
 export const postController: express.Router = express.Router();
