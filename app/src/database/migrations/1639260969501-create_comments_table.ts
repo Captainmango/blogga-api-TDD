@@ -8,7 +8,7 @@ export class createCommentsTable1639260969501 implements MigrationInterface {
             columns: [
                 {
                     name: "id",
-                    type: "autoincrement",
+                    type: "integer",
                     generationStrategy: "rowid",
                     isPrimary: true
                 },
@@ -35,6 +35,7 @@ export class createCommentsTable1639260969501 implements MigrationInterface {
                 {
                     name: "updated_at",
                     type: "datetime",
+                    isNullable: false
                 }
             ]
         }), true)

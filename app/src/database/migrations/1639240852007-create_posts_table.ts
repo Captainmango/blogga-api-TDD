@@ -8,7 +8,7 @@ export class createPostsTable1639240852007 implements MigrationInterface {
             columns: [
                 {
                     name: "id",
-                    type: "autoincrement",
+                    type: "integer",
                     generationStrategy: "rowid",
                     isPrimary: true
                 },
