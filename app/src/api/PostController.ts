@@ -7,9 +7,9 @@ postController.use(express.json())
 
 // put the index route here
 
-postController.get("/posts", function (req: express.Request, res: express.Response): void
+postController.get("/posts", async function (req: express.Request, res: express.Response): Promise<void>
 {
     const postRepository = getRepository(Post);
-    const posts = postRepository.find()
+    const posts = await postRepository.find()
     res.type('json').send({'posts': posts}).status(200)
 })

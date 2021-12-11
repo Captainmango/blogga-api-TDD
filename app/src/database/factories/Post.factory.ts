@@ -7,6 +7,7 @@ define(Post, (faker: typeof Faker) => {
     const body = faker.lorem.sentences(4)
    
     const post = new Post()
+    
     post.title =  title
     post.body = body
     return post

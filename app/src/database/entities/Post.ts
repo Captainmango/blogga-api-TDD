@@ -1,10 +1,12 @@
-import { Entity, Column, PrimaryColumn, PrimaryGeneratedColumn} from "typeorm";
+import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn} from "typeorm";
 
-@Entity('posts')
+@Entity({
+    name: "posts"
+})
 export class Post {
 
     @PrimaryGeneratedColumn()
-    id!: number;
+    id?: number;
 
     @Column({
         length: 75
@@ -12,8 +14,19 @@ export class Post {
     title!: string
 
     @Column({
-        length: 300,
         type: "text"
     })
     body!:string
+
+    @CreateDateColumn({
+        name: "created_at",
+        type: "datetime"
+    })
+    createdAt!: Date
+
+    @UpdateDateColumn({
+        name: "updated_at",
+        type: "datetime"
+    })
+    UpdatedAt!: Date
 }

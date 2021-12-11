@@ -1,9 +1,12 @@
 import { createConnection } from 'typeorm';
 import 'reflect-metadata'
-import { Post } from '../database/entities/Post';
 
-export async function createDatabase()
+export async function createDatabase(env: env)
 {
-    await createConnection()
-    
+    await createConnection(env)
+}
+
+export enum env {
+    dev = "default",
+    test = "test"
 }
