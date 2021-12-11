@@ -1,8 +1,9 @@
 import { createServer } from './utils/server'
-import { createDatabase, env } from './utils/db'
+import { createDatabase } from './utils/db'
 import 'reflect-metadata'
+import connection, { dbEnvs } from './utils/connection'
 
-createDatabase(env.dev)
+createDatabase()
 
 createServer()
   .then(server => {

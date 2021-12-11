@@ -2,19 +2,28 @@ import request from 'supertest'
 import { Express } from 'express-serve-static-core'
 import 'reflect-metadata'
 import { createServer } from '../../src/utils/server'
-import { createDatabase, env } from '../../src/utils/db'
-import { Connection, getConnection, createConnection } from 'typeorm'
-import { runSeeder, useRefreshDatabase, useSeeding } from 'typeorm-seeding'
+import { createDatabase } from '../../src/utils/db'
+import { Connection, getConnection, createConnection, createConnections } from 'typeorm'
+import { runSeeder, tearDownDatabase, useRefreshDatabase, useSeeding } from 'typeorm-seeding'
 import CreatePosts from '../../src/database/seeders/create-posts.seed'
+import connection, { dbEnvs } from '../../src/utils/connection'
 
 let server: Express
-let connection: Connection
-
 
 beforeAll(async () => {
-    connection = await createConnection("test")
+    await connection.createAll()
+    connection.get(dbEnvs.test)    
     server = await createServer()
     await useSeeding()
+})
+  
+afterAll(async () => {
+    await tearDownDatabase()
+    await connection.close(dbEnvs.test)
+})
+
+beforeEach(async () => {
+    await connection.clear(dbEnvs.test)
 })
 
 

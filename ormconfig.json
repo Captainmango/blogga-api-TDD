@@ -5,9 +5,9 @@
       "username": "root",
       "password": "",
       "database": "database.sqlite",
-      "synchronize": true,
-      "dropSchema": true,
-      "logging": true,
+      "synchronize": false,
+      "dropSchema": false,
+      "logging": false,
       "migrationsRun": true,
       "entities": [
          "app/src/database/entities/**/*.ts"
@@ -29,7 +29,8 @@
       "password": "",
       "database": ":memory:",
       "logging": false,
-      "migrationsRun": true,
+      "synchronize": true,
+      "dropSchema": true,
       "entities": [
          "app/src/database/entities/**/*.ts"
       ],
@@ -42,5 +43,5 @@
       },
       "seeds": ["app/src/database/seeders/**/*{.ts,.js}"],
       "factories": ["app/src/database/factories/**/*{.ts,.js}"]   
-     }
+   }
 ]
