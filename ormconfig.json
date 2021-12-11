@@ -27,10 +27,8 @@
       "type": "sqlite",
       "username": "root",
       "password": "",
-      "database": "test.sqlite",
-      "synchronize": true,
-      "dropSchema": true,
-      "logging": true,
+      "database": ":memory:",
+      "logging": false,
       "migrationsRun": true,
       "entities": [
          "app/src/database/entities/**/*.ts"

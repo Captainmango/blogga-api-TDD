@@ -1,6 +1,6 @@
 import express from 'express'
 import {Express} from 'express-serve-static-core'
-import { postController } from '../api/PostController'
+import { postController } from '../api/controllers/PostController'
 
 export async function createServer(): Promise<Express> 
 {

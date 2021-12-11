@@ -2,15 +2,21 @@ import request from 'supertest'
 import { Express } from 'express-serve-static-core'
 import 'reflect-metadata'
 import { createServer } from '../../src/utils/server'
-import { factory } from 'typeorm-seeding'
-import { Post } from '../../src/database/entities/Post'
+import { createDatabase, env } from '../../src/utils/db'
+import { Connection, getConnection, createConnection } from 'typeorm'
+import { runSeeder, useRefreshDatabase, useSeeding } from 'typeorm-seeding'
 import CreatePosts from '../../src/database/seeders/create-posts.seed'
 
 let server: Express
+let connection: Connection
+
 
 beforeAll(async () => {
+    connection = await createConnection("test")
     server = await createServer()
+    await useSeeding()
 })
+
 
 it("GET / has an index route", async () => {
     const res = await request(server).get("/")
@@ -20,6 +26,7 @@ it("GET / has an index route", async () => {
 })
 
 describe("POSTS API ENDPOINTS", () => {
+
     it("GET /posts has an index route", async () => {
         const res = await request(server).get("/posts")
         expect(res.ok)

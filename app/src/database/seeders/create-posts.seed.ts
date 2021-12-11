@@ -5,6 +5,6 @@ import 'reflect-metadata'
 
 export default class CreatePosts implements Seeder {
     public async run(factory: Factory, connection: Connection): Promise<any> {
-      await factory(Post)().createMany(20)
+      await factory(Post)().createMany(3)
     }
 }
