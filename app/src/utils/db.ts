@@ -1,5 +1,10 @@
 import {createConnection, createConnections, getConnection} from 'typeorm';
 
+/**
+ * db set up code and exposed API. TypeORM does a good job of this.
+ * But I wanted the API to be more idiomatic so it was easier to comprehend
+ */
+
 export enum dbEnvs {
   dev = "default",
   test = "test"

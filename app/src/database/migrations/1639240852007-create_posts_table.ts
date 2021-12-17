@@ -1,5 +1,11 @@
 import {MigrationInterface, QueryRunner, Table} from "typeorm";
 
+/**
+ * These dirty things are the migrations. Not a fan of these really but they work.
+ * These don't actually need to exist, but are here as a convenience incase you want to migrate and seed the db
+ * No need to mess with these.
+ */
+
 export class createPostsTable1639240852007 implements MigrationInterface {
 
     public async up(queryRunner: QueryRunner): Promise<void> {

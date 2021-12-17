@@ -5,7 +5,6 @@ import { PostRepository } from '../repositories/PostRepository';
 
 export const postController: express.Router = express.Router();
 
-postController.use(express.json())
 // put the index route ("/" only) here
 
 postController.get("/posts", async function (req: express.Request, res: express.Response): Promise<void>
