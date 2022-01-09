@@ -1,5 +1,5 @@
 import express from 'express'
-import {Express} from 'express-serve-static-core'
+import { Express } from 'express-serve-static-core'
 import { postController } from '../api/controllers/PostController'
 
 
@@ -9,9 +9,9 @@ import { postController } from '../api/controllers/PostController'
  * @returns Promise<Express>
  */
 
-export async function createServer(): Promise<Express> 
-{
+export async function createServer(): Promise<Express> {
   const server: Express = express()
+  server.use(express.json())
   server.use(postController)
   return server
 }

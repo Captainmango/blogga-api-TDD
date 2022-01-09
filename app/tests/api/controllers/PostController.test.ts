@@ -2,7 +2,7 @@ import request from 'supertest'
 import { Express } from 'express-serve-static-core'
 import 'reflect-metadata'
 import { createServer } from '../../../src/utils/server'
-import { getCustomRepository } from 'typeorm'
+import { Connection, getCustomRepository } from 'typeorm'
 import { factory, runSeeder, tearDownDatabase, useRefreshDatabase, useSeeding } from 'typeorm-seeding'
 import connection, { dbEnvs } from '../../../src/utils/db'
 import { Post } from '../../../src/database/entities/Post'
@@ -12,11 +12,11 @@ let server: Express
 
 beforeAll(async () => {
     await connection.createAll()
-    connection.get(dbEnvs.test)    
+    connection.get(dbEnvs.test)
     server = await createServer()
     await useSeeding()
 })
-  
+
 afterAll(async () => {
     await tearDownDatabase()
     await connection.close(dbEnvs.test)
@@ -24,6 +24,7 @@ afterAll(async () => {
 
 beforeEach(async () => {
     await connection.clear(dbEnvs.test)
+    await connection.clear(dbEnvs.dev)
 })
 
 /** Example test for a generic home route */
@@ -41,7 +42,7 @@ describe("POSTS API ENDPOINTS", () => {
         const res = await request(server).get("/posts")
         expect(res.ok)
         expect(res.type).toEqual(expect.stringContaining('json'))
-        expect(res.body.posts[0].title).toBe(posts[0].title)
+        expect(res.body.posts[0].id).toBe(posts[0].id)
         expect(res.body.posts).toHaveLength(2)
     })
 
@@ -85,7 +86,7 @@ describe("POSTS API ENDPOINTS", () => {
         const postRepository = getCustomRepository(PostRepository)
         const postToDelete = await postRepository.findOneOrFail(post[3].id)
         const res = await request(server).delete(`/posts/${postToDelete.id}`)
-        
+
         expect(res.status).toBe(204)
     })
 

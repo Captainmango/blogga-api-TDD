@@ -1,4 +1,4 @@
-[  
+[
    {
       "name": "default",
       "type": "sqlite",
@@ -19,15 +19,19 @@
          "entitiesDir": "app/src/database/entities",
          "migrationsDir": "app/src/database/migrations"
       },
-      "seeds": ["app/src/database/seeders/**/*{.ts,.js}"],
-      "factories": ["app/src/database/factories/**/*{.ts,.js}"]   
+      "seeds": [
+         "app/src/database/seeders/**/*{.ts,.js}"
+      ],
+      "factories": [
+         "app/src/database/factories/**/*{.ts,.js}"
+      ]
    },
    {
       "name": "test",
       "type": "sqlite",
       "username": "root",
       "password": "",
-      "database": ":memory:",
+      "database": "test.sqlite",
       "logging": false,
       "synchronize": true,
       "dropSchema": true,
@@ -39,10 +43,14 @@
          "app/src/migration/**/*.ts"
       ],
       "cli": {
-          "entitiesDir": "app/src/database/entities",
-          "migrationsDir": "app/src/database/migrations"
+         "entitiesDir": "app/src/database/entities",
+         "migrationsDir": "app/src/database/migrations"
       },
-      "seeds": ["app/src/database/seeders/**/*{.ts,.js}"],
-      "factories": ["app/src/database/factories/**/*{.ts,.js}"]   
+      "seeds": [
+         "app/src/database/seeders/**/*{.ts,.js}"
+      ],
+      "factories": [
+         "app/src/database/factories/**/*{.ts,.js}"
+      ]
    }
 ]

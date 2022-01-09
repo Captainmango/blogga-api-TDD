@@ -1,4 +1,4 @@
-import {createConnection, createConnections, getConnection} from 'typeorm';
+import { createConnection, createConnections, getConnection } from 'typeorm';
 
 /**
  * db set up code and exposed API. TypeORM does a good job of this.
@@ -11,24 +11,24 @@ export enum dbEnvs {
 }
 
 const connection = {
-  async create(){
+  async create() {
     await createConnection()
   },
 
-  async createAll(){
-      await createConnections()
+  async createAll() {
+    await createConnections()
   },
 
-  get(env: dbEnvs){
+  get(env: dbEnvs) {
     getConnection(env)
   },
 
-  async close(env: dbEnvs){
-    await getConnection(env).close() 
+  async close(env: dbEnvs) {
+    await getConnection(env).close()
   },
 
-  async clear(env: dbEnvs){
-    const connection = getConnection()
+  async clear(env: dbEnvs) {
+    const connection = getConnection(env)
     const entities = connection.entityMetadatas
 
     entities.forEach(async (entity) => {
