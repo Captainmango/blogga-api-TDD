@@ -2,8 +2,8 @@ import request from 'supertest'
 import { Express } from 'express-serve-static-core'
 import 'reflect-metadata'
 import { createServer } from '../../../src/utils/server'
-import { Connection, getCustomRepository } from 'typeorm'
-import { factory, runSeeder, tearDownDatabase, useRefreshDatabase, useSeeding } from 'typeorm-seeding'
+import { getCustomRepository } from 'typeorm'
+import { factory, tearDownDatabase, useSeeding } from 'typeorm-seeding'
 import connection, { dbEnvs } from '../../../src/utils/db'
 import { Post } from '../../../src/database/entities/Post'
 import { PostRepository } from '../../../src/api/repositories/PostRepository'
@@ -12,7 +12,7 @@ let server: Express
 
 beforeAll(async () => {
     await connection.createAll()
-    connection.get(dbEnvs.test)
+  connection.get(dbEnvs.test)
     server = await createServer()
     await useSeeding()
 })

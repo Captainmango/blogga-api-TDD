@@ -31,7 +31,7 @@
       "type": "sqlite",
       "username": "root",
       "password": "",
-      "database": "test.sqlite",
+      "database": ":memory:",
       "logging": false,
       "synchronize": true,
       "dropSchema": true,

@@ -13,5 +13,6 @@ export async function createServer(): Promise<Express> {
   const server: Express = express()
   server.use(express.json())
   server.use(postController)
+  // Put controllers here. copy the above example replacing the arg for the controller in question
   return server
 }
