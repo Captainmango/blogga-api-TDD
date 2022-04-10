@@ -8,7 +8,7 @@
       "synchronize": false,
       "dropSchema": false,
       "logging": false,
-      "migrationsRun": true,
+      "migrationsRun": false,
       "entities": [
          "app/src/database/entities/**/*.ts"
       ],

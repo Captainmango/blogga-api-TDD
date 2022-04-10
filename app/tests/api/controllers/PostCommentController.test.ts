@@ -24,9 +24,6 @@ beforeEach(async () => {
 })
 
 describe("NESTED ROUTES", () => {
-    it.todo("GET /posts/{post_id}/comments is able to get all comments for a post")
-
-    it.todo("GET /posts/{post_id}/comments returns 404 if no post is found")
 
     it.todo("PATCH /posts/{post_id}/comments/{comment_id} is able to update a post's comments")
 
@@ -34,14 +31,7 @@ describe("NESTED ROUTES", () => {
 
     it.todo("PATCH /posts/{post_id}/comments/{comment_id} verifies that comment found belongs to post")
 
-    it.todo("PATCH /posts/{post_id}/comments/{comment_id} returns 422 if the comment does not belong to the provided post")
-
     it.todo("POST /posts/{post_id}/comments is able to create a new comment for a post")
 
     it.todo("POST /posts/{post_id}/comments returns 404 if post does not exist")
-
-    it.todo("GET /posts/{post_id}/comments/{comment_id} is able to get a specific comment for a specific post")
-
-    it.todo("GET /posts/{post_id}/comments/{comment_id} verifies that comment found belongs to post")
-
 })
