@@ -9,18 +9,17 @@ let server: Express
 
 beforeAll(async () => {
     await connection.createAll()
-    connection.get(dbEnvs.test)    
+    connection.get(dbEnvs.dev)    
     server = await createServer()
     await useSeeding()
 })
   
 afterAll(async () => {
     await tearDownDatabase()
-    await connection.close(dbEnvs.test)
 })
 
 beforeEach(async () => {
-    await connection.clear(dbEnvs.test)
+    await connection.clear(dbEnvs.dev)
 })
 
 describe("NESTED ROUTES", () => {
