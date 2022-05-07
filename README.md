@@ -65,32 +65,25 @@ $ npm run migrations:run
 
 ```
 
-When you do this, you will see the terminal output the SQL that as ran against the database. The client used is SQLite. It's recommended to use the `firsttris.vscode-jest-runner` extension if you're using VSCode. This will allow you to run your tests in the test file directly shortening the feedback loop. If there are problems installing this, run the tests via the terminal attaching the modifiers the the test functions as explained above.
+When you do this, you will see the terminal output the SQL that as ran against the database. The client used is SQLite. It's recommended to use the `firsttris.vscode-jest-runner` extension if you're using VSCode. This will allow you to run your tests in the test file directly shortening the feedback loop. If there are problems installing this, run the tests via the terminal attaching the modifiers on the test functions as explained above.
 
 
 ## Acceptance Criteria
 
-- [ ] Variables are typed as much as possible
 - [ ] All branches of functions are handled within themselves and do not leak data (no unhandled exceptions or unused returned objects)
 - [ ] Separate concerns. Keep the controller functions lean
+
 ### Manage Posts
 - [ ] CRUD operations can be done on posts
-- [ ] There are appropriate responses when incorrect params are sent
+- [ ] There are appropriate responses when errors happen on the API
 - [ ] There are no 500 errors returned from any routes
 - [ ] All responses should be in JSON
 
 ### Manage Comments
 - [ ] CRUD operations can be done on comments (**This doesn't all have to be in one controller**)
-- [ ] There are appropriate responses when incorrect params are sent
+- [ ] There are appropriate responses when errors happen on the API
 - [ ] There are no 500 errors returned from any routes
 - [ ] All responses should be in JSON
-
-### Data Relationships
-- [ ] Migrations for posts and comments remain unchanged (**add field mapping relationship to the entities**)
-- [ ] Posts have a has many relationship to comments
-- [ ] Comments belong to a single post (this cannot be changed)
-- [ ] Comments are loaded with their post when the comment is fetched (to avoid n+1 problems)
-- [ ] Posts are loaded with their comments when the post is fetched
 
 
 ## Helpful resources
