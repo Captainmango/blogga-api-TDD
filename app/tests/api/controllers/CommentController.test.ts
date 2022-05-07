@@ -26,7 +26,7 @@ describe("COMMENTS API ENDPOINTS", () => {
     it("GET /comments has an index route", async () => {
         const comments: Comment[] = await factory(Comment)().createMany(4)
         const comment = comments[0]
-        const {createdAt, updatedAt, ...expected} = comment
+        const {createdAt, updatedAt, post, ...expected} = comment
 
         const res = await request(server).get("/comments")
 
@@ -36,7 +36,7 @@ describe("COMMENTS API ENDPOINTS", () => {
 
     it("GET /comments/{comment_id} is able to retrieve a single comment", async () => {
         const comment = await factory(Comment)().create()
-        const {createdAt, updatedAt, ...expected} = comment
+        const {createdAt, updatedAt, post, ...expected} = comment
 
         const res = await request(server).get(`/comments/${comment.id}`)
 
