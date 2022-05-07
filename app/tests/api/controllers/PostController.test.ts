@@ -51,7 +51,7 @@ describe("POSTS API ENDPOINTS", () => {
 
         const res = await request(server).get(`/posts/${post.id}`)
 
-        expect(res.ok)
+        expect(res.statusCode).toEqual(200)
         expect(res.type).toEqual(expect.stringContaining('json'))
         expect(res.body).toMatchObject(expected)
     })
