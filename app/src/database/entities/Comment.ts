@@ -23,6 +23,12 @@ export class Comment {
     })
     content!:string
 
+    @Column({
+        name: "post_id",
+        nullable: true
+    })
+    postId!: number | null
+
     @CreateDateColumn({
         name: "created_at",
         type: "datetime"
