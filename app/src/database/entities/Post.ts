@@ -1,5 +1,5 @@
-import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn} from "typeorm";
-
+import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, OneToMany} from "typeorm";
+import { Comment } from "./Comment";
 
 /**
  * Very common pattern here in the modern back end world. Entities or models help us map data to table rows.
@@ -23,6 +23,9 @@ export class Post {
         type: "text"
     })
     body!:string
+
+    @OneToMany(() => Comment, comment => comment.post)
+    comments!: Comment[]
 
     @CreateDateColumn({
         name: "created_at",

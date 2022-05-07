@@ -1,9 +1,10 @@
 import request from 'supertest'
 import { Express } from 'express-serve-static-core'
-
 import { createServer } from '../../../src/utils/server'
 import connection, { dbEnvs } from '../../../src/utils/db'
-import { useSeeding, tearDownDatabase } from 'typeorm-seeding'
+import { useSeeding, tearDownDatabase, factory } from 'typeorm-seeding'
+import { Post } from '../../../src/database/entities/Post'
+import { Comment } from '../../../src/database/entities/Comment'
 
 let server: Express
 
@@ -24,7 +25,21 @@ beforeEach(async () => {
 
 describe("NESTED ROUTES", () => {
 
-    it.todo("PATCH /posts/{post_id}/comments/{comment_id} is able to update a post's comments")
+    it("PATCH /posts/{post_id}/comments/{comment_id} is able to update a post's comments", async () => {
+        const post: Post = await factory(Post)().create()
+        const comment: Comment = await factory(Comment)().create({ post })
+        const payload = {
+            name: "Mikey2022",
+            content: "Some guff I guess",
+            email: "test@test.com"
+        }
+
+        const res = await request(server).patch(`/posts/${post.id}/comments/${comment.id}`)
+            .send(payload)
+
+        expect(res.statusCode).toEqual(202)
+        expect(res.body).toMatchObject(payload)
+    })
 
     it.todo("PATCH /posts/{post_id}/comments/{comment_id} returns 404 if no post found")
 

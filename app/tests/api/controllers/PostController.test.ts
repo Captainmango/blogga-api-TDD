@@ -36,7 +36,7 @@ describe("POSTS API ENDPOINTS", () => {
     it("GET /posts has an index route", async () => {
         const posts: Post[] = await factory(Post)().createMany(2)
         const post = posts[0]
-        const { createdAt, updatedAt, ...expected } = post
+        const { createdAt, updatedAt, comments, ...expected } = post
 
         const res = await request(server).get("/posts")
 
@@ -47,7 +47,7 @@ describe("POSTS API ENDPOINTS", () => {
 
     it("GET /posts/{post_id} is able to retrieve a single post", async () => {
         const post: Post = await factory(Post)().create()
-        const { createdAt, updatedAt, ...expected } = post
+        const { createdAt, updatedAt, comments, ...expected } = post
 
         const res = await request(server).get(`/posts/${post.id}`)
 

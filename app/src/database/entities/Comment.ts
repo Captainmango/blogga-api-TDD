@@ -1,4 +1,5 @@
-import {Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn} from "typeorm";
+import {Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn} from "typeorm";
+import { Post } from "./Post";
 
 @Entity({
     name: "comments"
@@ -23,11 +24,9 @@ export class Comment {
     })
     content!:string
 
-    @Column({
-        name: "post_id",
-        nullable: true
-    })
-    postId!: number | null
+    @ManyToOne(() => Post, post => post.comments)
+    @JoinColumn({name: "post_id"})
+    post!: Post
 
     @CreateDateColumn({
         name: "created_at",
