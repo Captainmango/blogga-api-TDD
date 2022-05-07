@@ -7,6 +7,11 @@ export const postController: express.Router = express.Router();
 
 // put the index route ("/" only) here
 
+postController.get("/", async function (req: express.Request, res: express.Response): Promise<void> {
+    res.status(200).send({message: "bingo bango"})
+})
+
+
 postController.get("/posts", async function (req: express.Request, res: express.Response): Promise<void> {
     const postRepository = getCustomRepository(PostRepository)
 
