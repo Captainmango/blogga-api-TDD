@@ -1,4 +1,4 @@
-import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, OneToMany} from "typeorm";
+import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, OneToMany, JoinColumn} from "typeorm";
 import { Comment } from "./Comment";
 
 /**
@@ -24,7 +24,10 @@ export class Post {
     })
     body!:string
 
-    @OneToMany(() => Comment, comment => comment.post)
+    @OneToMany(() => Comment, comment => comment.post, {
+        cascade: true,
+        eager: true
+    })
     comments!: Comment[]
 
     @CreateDateColumn({

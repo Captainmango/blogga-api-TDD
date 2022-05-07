@@ -5,6 +5,8 @@ import connection, { dbEnvs } from '../../../src/utils/db'
 import { useSeeding, tearDownDatabase, factory } from 'typeorm-seeding'
 import { Post } from '../../../src/database/entities/Post'
 import { Comment } from '../../../src/database/entities/Comment'
+import { getCustomRepository } from 'typeorm'
+import { CommentRepository } from '../../../src/api/repositories/CommentRepository'
 
 let server: Express
 
@@ -27,7 +29,7 @@ describe("NESTED ROUTES", () => {
 
     it("PATCH /posts/{post_id}/comments/{comment_id} is able to update a post's comments", async () => {
         const post: Post = await factory(Post)().create()
-        const comment: Comment = await factory(Comment)().create({ post })
+        const comment: Comment = await factory(Comment)().create({ post: post })
         const payload = {
             name: "Mikey2022",
             content: "Some guff I guess",

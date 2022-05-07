@@ -13,14 +13,15 @@ postCommentController.patch("/posts/:postId/comments/:commentId", async function
     const payload = req.body
 
     postRepository.findOneOrFail(postId)
-    .then(() => {
+    .then((post) => {
 
         // Looks like we need some logic to check if the commentId sent belongs to the post we found
 
         commentRepository.findOneOrFail(commentId)
         .then(async (comment) => {
             await commentRepository.update(comment.id, payload)
-            const updatedComment = await commentRepository.findOne(commentId)
+            const updatedComment = await commentRepository.findOne(comment.id)
+
             res.status(202).send(updatedComment)
         })
         .catch(error => {
