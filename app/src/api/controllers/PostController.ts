@@ -24,7 +24,20 @@ postController.get("/posts", async function (req: express.Request, res: express.
         res.status(200).send(posts)
     })
     .catch(error => {
-        res.send(error)
+        res.status(500).send(error)
+    })
+})
+
+postController.get("/posts/:id", async function (req: express.Request, res: express.Response): Promise<void> {
+    const postRepository = getCustomRepository(PostRepository)
+    const postId = req.params.id
+    
+    postRepository.findOneOrFail(postId)
+    .then(post => {
+        res.status(200).send(post)
+    })
+    .catch(error => {
+        res.status(404).send(error)
     })
 })
 
@@ -38,7 +51,23 @@ postController.delete("/posts/:id", async function (req: express.Request, res: e
         res.status(204).send()
     })
     .catch(error => {
-        res.send(error)
+        res.status(404).send(error)
+    })
+})
+
+postController.patch("/posts/:id", async function (req: express.Request, res: express.Response): Promise<void> {
+    const postRepository = getCustomRepository(PostRepository)
+    const postId = req.params.id
+    const postBody = req.body
+    
+    postRepository.findOneOrFail(postId)
+    .then(async (post) => {
+        await postRepository.update(post.id, postBody)
+        const updatedPost = await postRepository.findOne(post.id)
+        res.status(200).send(updatedPost)
+    })
+    .catch(error => {
+        res.status(404).send(error)
     })
 })
 
