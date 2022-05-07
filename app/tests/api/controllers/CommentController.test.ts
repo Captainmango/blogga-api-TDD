@@ -1,6 +1,6 @@
 import request from 'supertest'
 import { Express } from 'express-serve-static-core'
-
+import { Comment } from '../../../src/database/entities/Comment'
 import { createServer } from '../../../src/utils/server'
 import connection, { dbEnvs } from '../../../src/utils/db'
 import { tearDownDatabase, useSeeding } from 'typeorm-seeding'
