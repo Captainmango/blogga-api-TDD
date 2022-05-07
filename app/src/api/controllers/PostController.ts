@@ -9,7 +9,7 @@ export const postController: express.Router = express.Router();
 
 postController.get("/posts", async function (req: express.Request, res: express.Response): Promise<void> {
     const postRepository = getCustomRepository(PostRepository)
-    
+
     postRepository.find({
         order: {
             id: 'ASC'
@@ -40,6 +40,7 @@ postController.delete("/posts/:id", async function (req: express.Request, res: e
 postController.post("/posts", async function (req: express.Request, res: express.Response): Promise<void> {
     const postRepository = getCustomRepository(PostRepository)
     const postBody = req.body
+
     const postToSave = new Post()
     postToSave.title = postBody.title
     postToSave.body = postBody.body
