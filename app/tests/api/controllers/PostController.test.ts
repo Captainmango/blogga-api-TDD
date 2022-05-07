@@ -59,6 +59,8 @@ describe("POSTS API ENDPOINTS", () => {
     it("GET /posts/{post_id} returns 404 if there is no post at the id", async () => {
         const res = await request(server).get("/posts/2003")
         expect(res.statusCode).toEqual(404)
+        expect(res.type).toEqual(expect.stringContaining('json'))
+        expect(res.body).toHaveProperty('message')
     })
 
     it("PATCH /posts/{post_id} is able to update a post", async () => {
@@ -86,6 +88,8 @@ describe("POSTS API ENDPOINTS", () => {
         const res = await request(server).patch("/posts/2003").send(payload)
 
         expect(res.statusCode).toEqual(404)
+        expect(res.type).toEqual(expect.stringContaining('json'))
+        expect(res.body).toHaveProperty('message')
     })
 
     it("DELETE /posts/{post_id} is able to delete a post", async () => {
@@ -101,6 +105,8 @@ describe("POSTS API ENDPOINTS", () => {
         const res = await request(server).delete("/posts/2003")
 
         expect(res.statusCode).toEqual(404)
+        expect(res.type).toEqual(expect.stringContaining('json'))
+        expect(res.body).toHaveProperty('message')
     })
 
     it("POST /posts is able to create a new post", async () => {
