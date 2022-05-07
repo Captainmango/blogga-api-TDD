@@ -23,17 +23,47 @@ beforeEach(async () => {
 })
 
 describe("COMMENTS API ENDPOINTS", () => {
-    it.todo("GET /comments has an index route", async () => {
+    it("GET /comments has an index route", async () => {
         const comments: Comment[] = await factory(Comment)().createMany(4)
         const comment = comments[0]
         const {createdAt, updatedAt, ...expected} = comment
+
+        const res = await request(server).get("/comments")
+
+        expect(res.statusCode).toEqual(200)
+        expect(res.body[0]).toMatchObject(expected)
     })
 
-    it.todo("GET /comments/{comment_id} is able to retrieve a single comment")
+    it("GET /comments/{comment_id} is able to retrieve a single comment", async () => {
+        const comment = await factory(Comment)().create()
+        const {createdAt, updatedAt, ...expected} = comment
 
-    it.todo("GET /comments/{comment_id} returns 404 if comment cannot be found")
+        const res = await request(server).get(`/comments/${comment.id}}`)
 
-    it.todo("DELETE /comments/{comment_id} is able to delete a comment")
+        expect(res.statusCode).toEqual(200)
+        expect(res.body).toMatchObject(expected)
+    })
 
-    it.todo("DELETE /comments/{comment_id} returns 404 if comment cannot be found")
+    it("GET /comments/{comment_id} returns 404 if comment cannot be found", async () => {
+        const res = await request(server).get("/comments/42")
+
+        expect(res.statusCode).toEqual(404)
+        expect(res.body).toHaveProperty('message')
+    })
+
+    it("DELETE /comments/{comment_id} is able to delete a comment", async () => {
+        const comments: Comment[] = await factory(Comment)().createMany(3)
+        const comment = comments[1]
+
+        const res = await request(server).delete(`/comments/${comment.id}`)
+
+        expect(res.statusCode).toEqual(204)
+    })
+
+    it("DELETE /comments/{comment_id} returns 404 if comment cannot be found", async () => {
+        const res = await request(server).delete("/comments/42")
+
+        expect(res.statusCode).toEqual(404)
+        expect(res.body).toHaveProperty('message')
+    })
 })
