@@ -34,5 +34,5 @@ export class Post {
         name: "updated_at",
         type: "datetime"
     })
-    UpdatedAt!: Date
+    updatedAt!: Date
 }

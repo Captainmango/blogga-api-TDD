@@ -33,5 +33,5 @@ export class Comment {
         name: "updated_at",
         type: "datetime"
     })
-    UpdatedAt!: Date
+    updatedAt!: Date
 }

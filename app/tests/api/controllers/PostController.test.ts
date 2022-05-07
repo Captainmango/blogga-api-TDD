@@ -37,19 +37,25 @@ describe("POSTS API ENDPOINTS", () => {
 
     it("GET /posts has an index route", async () => {
         const posts: Post[] = await factory(Post)().createMany(2)
+        const post = posts[0]
+        const {createdAt, updatedAt, ...expected} = post
+
         const res = await request(server).get("/posts")
+
         expect(res.ok)
         expect(res.type).toEqual(expect.stringContaining('json'))
-        expect(res.body.posts[0].id).toBe(posts[0].id)
-        expect(res.body.posts).toHaveLength(2)
+        expect(res.body[0]).toMatchObject(expected)
     })
 
     it("GET /posts/{post_id} is able to retrieve a single post", async () => {
         const post: Post = await factory(Post)().create()
+        const {createdAt, updatedAt, ...expected} = post
+
         const res = await request(server).get(`/posts/${post.id}`)
+
         expect(res.ok)
         expect(res.type).toEqual(expect.stringContaining('json'))
-        expect(res.body).toMatchObject(post)
+        expect(res.body).toMatchObject(expected)
     })
 
     it("GET /posts/{post_id} returns 404 if there is no post at the id", async () => {
@@ -59,15 +65,19 @@ describe("POSTS API ENDPOINTS", () => {
     })
 
     it("PATCH /posts/{post_id} is able to update a post", async () => {
-        const post: Post[] = await factory(Post)().createMany(4)
+        const posts: Post[] = await factory(Post)().createMany(4)
+        const post = posts[2]
+        const payload = {
+            title: "This is the new title",
+            body: "This is the body of the post"
+        }
+
         const res = await request(server)
-            .patch(`/posts/${post[2].id}`)
-            .send({
-                title: "This is the new title",
-                body: "This is the body of the post"
-            })
+            .patch(`/posts/${post.id}`)
+            .send(payload)
+
         expect(res.statusCode).toBe(200)
-        expect(res.body).toMatchObject(post[2])
+        expect(res.body).toMatchObject(payload)
     })
 
     it("PATCH /posts/{post_id} returns resource not found if there is no post at the id", async () => {
@@ -98,11 +108,14 @@ describe("POSTS API ENDPOINTS", () => {
     })
 
     it("POST /posts is able to create a new post", async () => {
+        const payload = {
+            title: "My awesome new post",
+            body: "Some lorem I guess?"
+        }
+
         const res = await request(server).post("/posts")
-            .send({
-                title: "My awesome new post",
-                body: "Some lorem I guess?"
-            })
+            .send(payload)
+            
         expect(res.statusCode).toBe(201)
         expect(res.body).toHaveProperty("title")
         expect(res.body.title).toBe("My awesome new post")

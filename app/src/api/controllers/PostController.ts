@@ -9,26 +9,32 @@ export const postController: express.Router = express.Router();
 
 postController.get("/posts", async function (req: express.Request, res: express.Response): Promise<void> {
     const postRepository = getCustomRepository(PostRepository)
-    const posts = await postRepository.find({
+    
+    postRepository.find({
         order: {
             id: 'ASC'
         }
     })
-    res.status(200)
-    res.type('json').send({ posts })
+    .then(posts => {
+        res.status(200).send(posts)
+    })
+    .catch(error => {
+        res.send(error)
+    })
 })
 
 postController.delete("/posts/:id", async function (req: express.Request, res: express.Response): Promise<void> {
     const postRepository = getCustomRepository(PostRepository)
     const postId = req.params.id
-    const post = await postRepository.findOneOrFail(postId)
-    if (!post) {
-        res.type('json').send({ message: `Post with ID ${postId} not deleted as not found` }).status(404)
-        return
-    }
-    await postRepository.delete(postId)
-    res.status(204)
-    res.type('json').send({ message: `Post with ID ${postId} deleted` })
+    
+    postRepository.findOneOrFail(postId)
+    .then(() => {
+        postRepository.delete(postId)
+        res.status(204).send()
+    })
+    .catch(error => {
+        res.send(error)
+    })
 })
 
 postController.post("/posts", async function (req: express.Request, res: express.Response): Promise<void> {
@@ -38,8 +44,11 @@ postController.post("/posts", async function (req: express.Request, res: express
     postToSave.title = postBody.title
     postToSave.body = postBody.body
 
-    const newPost = await postRepository.save(postToSave)
-
-    res.status(201)
-    res.type('json').send(newPost)
+    postRepository.save(postToSave)
+    .then(post => {
+        res.status(201).send(post)
+    })
+    .catch(error => {
+        res.send(error)
+    })
 })
