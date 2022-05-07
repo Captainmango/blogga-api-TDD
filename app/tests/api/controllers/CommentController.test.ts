@@ -38,7 +38,7 @@ describe("COMMENTS API ENDPOINTS", () => {
         const comment = await factory(Comment)().create()
         const {createdAt, updatedAt, ...expected} = comment
 
-        const res = await request(server).get(`/comments/${comment.id}}`)
+        const res = await request(server).get(`/comments/${comment.id}`)
 
         expect(res.statusCode).toEqual(200)
         expect(res.body).toMatchObject(expected)
