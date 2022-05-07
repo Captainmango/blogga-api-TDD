@@ -43,11 +43,65 @@ describe("NESTED ROUTES", () => {
         expect(res.body).toMatchObject(payload)
     })
 
-    it.todo("PATCH /posts/{post_id}/comments/{comment_id} returns 404 if no post found")
+    it("PATCH /posts/{post_id}/comments/{comment_id} returns 404 if no post found", async () => {
+        const payload = {
+            name: "Mikey2022",
+            content: "Some guff I guess",
+            email: "test@test.com"
+        }
 
-    it.todo("PATCH /posts/{post_id}/comments/{comment_id} verifies that comment found belongs to post")
+        const res = await request(server).patch("/posts/2003/comments/2003")
+            .send(payload)
 
-    it.todo("POST /posts/{post_id}/comments is able to create a new comment for a post")
+        expect(res.statusCode).toEqual(404)
+        expect(res.body).toHaveProperty('message')
+    })
 
-    it.todo("POST /posts/{post_id}/comments returns 404 if post does not exist")
+    it("PATCH /posts/{post_id}/comments/{comment_id} verifies that comment found belongs to post", async () => {
+        const postOne: Post = await factory(Post)().create()
+        const postTwo: Post = await factory(Post)().create()
+        const comment: Comment = await factory(Comment)().create({ post: postTwo })
+
+        const payload = {
+            name: "Mikey2022",
+            content: "Some guff I guess",
+            email: "test@test.com"
+        }
+
+        const res = await request(server).patch(`/posts/${postOne.id}/comments/${comment.id}`)
+            .send(payload)
+
+        expect(res.statusCode).toEqual(422)
+        expect(res.body).toHaveProperty('message')
+    })
+
+    it("POST /posts/{post_id}/comments is able to create a new comment for a post", async () => {
+        const post: Post = await factory(Post)().create()
+        const comment: Comment = await factory(Comment)().create({ post: post })
+        const payload = {
+            name: "Mikey2022",
+            content: "Some guff I guess",
+            email: "test@test.com"
+        }
+
+        const res = await request(server).post(`/posts/${post.id}/comments/`)
+            .send(payload)
+
+        expect(res.statusCode).toEqual(201)
+        expect(res.body).toMatchObject(payload)
+    })
+
+    it("POST /posts/{post_id}/comments returns 404 if post does not exist", async () => {
+        const payload = {
+            name: "Mikey2022",
+            content: "Some guff I guess",
+            email: "test@test.com"
+        }
+
+        const res = await request(server).post("/posts/2003/comments")
+            .send(payload)
+
+        expect(res.statusCode).toEqual(404)
+        expect(res.body).toHaveProperty('message')
+    })
 })
