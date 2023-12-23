@@ -27,4 +27,12 @@ export class Comment extends BaseEntity
 
     @ManyToOne(() => Post)
     post!: Post
+
+    constructor(name: string, email: string, content: string) {
+        super()
+        
+        this.content = content
+        this.email = email
+        this.name = name
+    }
 }

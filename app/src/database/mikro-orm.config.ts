@@ -10,9 +10,10 @@ export default defineConfig({
     debug: true,
     migrations: {
         tableName: "database_migrations",
-        path: "./migrations",
+        path: "./app/src/database/migrations",
         disableForeignKeys: true,
         allOrNothing: true,
         emit: 'ts',
+        snapshot: false,
     }
 })
