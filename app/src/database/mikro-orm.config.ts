@@ -15,5 +15,9 @@ export default defineConfig({
         allOrNothing: true,
         emit: 'ts',
         snapshot: false,
+    },
+    seeder: {
+        path: "./app/src/database/seeders",
+        emit: 'ts',
     }
 })
