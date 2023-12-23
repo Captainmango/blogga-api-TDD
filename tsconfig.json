@@ -99,7 +99,8 @@
     "skipLibCheck": true,                                 /* Skip type checking all .d.ts files. */
     "baseUrl": "./",
     "paths": {
-      "@entities/*": ["app/src/database/entities/*"]
+      "@entities/*": ["app/src/database/entities/*"],
+      "@repositories/*": ["app/src/database/repositories/*"]
     },
   },
 }

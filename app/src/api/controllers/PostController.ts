@@ -1,7 +1,7 @@
 import * as express from 'express';
 import { getCustomRepository, getRepository } from 'typeorm';
 import { Post } from '../../database/entities/Post';
-import { PostRepository } from '../repositories/PostRepository';
+import { PostRepository } from '../../database/repositories/PostRepository';
 
 export const postController: express.Router = express.Router();
 
@@ -15,26 +15,26 @@ postController.get("/posts", async function (req: express.Request, res: express.
             id: 'ASC'
         }
     })
-    .then(posts => {
-        res.status(200).send(posts)
-    })
-    .catch(error => {
-        res.send(error)
-    })
+        .then(posts => {
+            res.status(200).send(posts)
+        })
+        .catch(error => {
+            res.send(error)
+        })
 })
 
 postController.delete("/posts/:id", async function (req: express.Request, res: express.Response): Promise<void> {
     const postRepository = getCustomRepository(PostRepository)
     const postId = req.params.id
-    
+
     postRepository.findOneOrFail(postId)
-    .then(() => {
-        postRepository.delete(postId)
-        res.status(204).send()
-    })
-    .catch(error => {
-        res.send(error)
-    })
+        .then(() => {
+            postRepository.delete(postId)
+            res.status(204).send()
+        })
+        .catch(error => {
+            res.send(error)
+        })
 })
 
 postController.post("/posts", async function (req: express.Request, res: express.Response): Promise<void> {
@@ -46,10 +46,10 @@ postController.post("/posts", async function (req: express.Request, res: express
     postToSave.body = postBody.body
 
     postRepository.save(postToSave)
-    .then(post => {
-        res.status(201).send(post)
-    })
-    .catch(error => {
-        res.send(error)
-    })
+        .then(post => {
+            res.status(201).send(post)
+        })
+        .catch(error => {
+            res.send(error)
+        })
 })

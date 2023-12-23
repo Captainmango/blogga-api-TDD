@@ -6,17 +6,17 @@ import { useSeeding, tearDownDatabase, factory } from 'typeorm-seeding'
 import { Post } from '../../../src/database/entities/Post'
 import { Comment } from '../../../src/database/entities/Comment'
 import { getCustomRepository } from 'typeorm'
-import { CommentRepository } from '../../../src/api/repositories/CommentRepository'
+import { CommentRepository } from '../../../src/database/repositories/CommentRepository'
 
 let server: Express
 
 beforeAll(async () => {
     await connection.createAll()
-    connection.get(dbEnvs.dev)    
+    connection.get(dbEnvs.dev)
     server = await createServer()
     await useSeeding()
 })
-  
+
 afterAll(async () => {
     await tearDownDatabase()
 })
