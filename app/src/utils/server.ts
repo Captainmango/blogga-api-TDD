@@ -3,11 +3,15 @@ import { Express } from 'express-serve-static-core'
 import { postCommentController } from '../api/controllers/PostCommentController'
 import { commentController } from '../api/controllers/CommentController'
 import { postController } from '../api/controllers/PostController'
+import { Deps } from '../app'
+import { RequestContext } from '@mikro-orm/core'
 
 
 export async function createServer(): Promise<Express> {
   const server: Express = express()
   server.use(express.json())
+  server.use((req, res, next) => RequestContext.create(Deps.orm.em, next))
+
   server.use(postController)
 
 

@@ -12,7 +12,6 @@ export default defineConfig({
     dbName: databaseName,
     highlighter: new SqlHighlighter(),
     debug: true,
-    allowGlobalContext: true,
     migrations: {
         tableName: "database_migrations",
         path: "./app/src/database/migrations",

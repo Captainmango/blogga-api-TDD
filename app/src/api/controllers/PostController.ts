@@ -45,5 +45,7 @@ postController.post("/posts", async function (req: express.Request, res: express
         body: postBody.body
     })
 
+    Deps.em.flush()
+
     res.status(201).send(post)
 })

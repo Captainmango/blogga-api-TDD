@@ -16,8 +16,7 @@ beforeAll(async () => {
     await Deps.orm.getMigrator().up()
 
     await Deps.orm.config.getDriver().reconnect()
-    await Deps.em.nativeDelete(Post, {})
-    await Deps.em.nativeDelete(Comment, {})
+    await Deps.orm.getSchemaGenerator().clearDatabase()
 })
 
 afterAll(async () => {
@@ -26,8 +25,11 @@ afterAll(async () => {
 })
 
 afterEach(async () => {
-    await Deps.em.nativeDelete(Post, {})
-    await Deps.em.nativeDelete(Comment, {})
+    await Deps.orm.getSchemaGenerator().clearDatabase()
+})
+
+beforeEach(async () => {
+    Deps.em = Deps.orm.em.fork()
 })
 
 /** Example test for a generic home route */
@@ -39,7 +41,6 @@ it("GET / has an index route", async () => {
 })
 
 describe("POSTS API ENDPOINTS", () => {
-
     it("GET /posts has an index route", async () => {
         const posts: Post[] = await new PostFactory(Deps.em).create(2)
         const post = posts[0]
