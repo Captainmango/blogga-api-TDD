@@ -1,7 +1,6 @@
 import request from 'supertest'
 import { Express } from 'express-serve-static-core'
 import 'reflect-metadata'
-import { createServer } from '@utils/server'
 import { Post } from '@entities/Post'
 import { Deps, init } from '../../../src/app'
 import { PostFactory } from 'app/src/database/factories/PostFactory'

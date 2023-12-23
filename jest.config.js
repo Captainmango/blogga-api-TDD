@@ -3,5 +3,8 @@ module.exports = {
   preset: 'ts-jest',
   testEnvironment: 'node',
   modulePathIgnorePatterns: ["<rootDir>/src/utils"],
-  testPathIgnorePatterns: ['./node_modules/']
+  testPathIgnorePatterns: ['./node_modules/'],
+  moduleNameMapper: {
+    '@entities/(.*)': '<rootDir>/app/src/database/entities/$1'
+}
 };
