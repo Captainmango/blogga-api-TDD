@@ -1,6 +1,6 @@
 import { Comment } from '@entities/Comment';
 import { Post } from '@entities/Post';
-import { Deps } from 'app/src';
+import { Deps } from '@main';
 import * as express from 'express';
 
 export const postCommentController: express.Router = express.Router();

@@ -11,7 +11,6 @@ export default defineConfig({
     entities: [Post, Comment],
     dbName: databaseName,
     highlighter: new SqlHighlighter(),
-    debug: true,
     migrations: {
         tableName: "database_migrations",
         path: "./app/src/database/migrations",

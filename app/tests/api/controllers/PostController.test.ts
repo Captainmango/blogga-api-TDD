@@ -1,16 +1,11 @@
 import request from 'supertest'
-import { Express } from 'express-serve-static-core'
 import 'reflect-metadata'
 import { Post } from '@entities/Post'
 import { Deps, init } from '@main'
 import { PostFactory } from '@factories/PostFactory'
 
-let server: Express
-
 beforeAll(async () => {
     await init
-
-    Deps.orm.config.set("debug", false)
 
     await Deps.orm.getMigrator().up()
 
@@ -56,7 +51,7 @@ describe("POSTS API ENDPOINTS", () => {
         const post: Post = await new PostFactory(Deps.em).createOne()
         const { createdAt, updatedAt, comments, ...expected } = post
 
-        const res = await request(server).get(`/posts/${post.id}`)
+        const res = await request(Deps.server).get(`/posts/${post.id}`)
 
         expect(res.statusCode).toEqual(200)
         expect(res.type).toEqual(expect.stringContaining('json'))
@@ -64,7 +59,7 @@ describe("POSTS API ENDPOINTS", () => {
     })
 
     it("GET /posts/{post_id} returns 404 if there is no post at the id", async () => {
-        const res = await request(server).get("/posts/2003")
+        const res = await request(Deps.server).get("/posts/2003")
         expect(res.statusCode).toEqual(404)
         expect(res.type).toEqual(expect.stringContaining('json'))
         expect(res.body).toHaveProperty('message')
@@ -78,7 +73,7 @@ describe("POSTS API ENDPOINTS", () => {
             body: "This is the body of the post"
         }
 
-        const res = await request(server)
+        const res = await request(Deps.server)
             .patch(`/posts/${post.id}`)
             .send(payload)
 
@@ -92,7 +87,7 @@ describe("POSTS API ENDPOINTS", () => {
             body: "This is the body of the post"
         }
 
-        const res = await request(server).patch("/posts/2003").send(payload)
+        const res = await request(Deps.server).patch("/posts/2003").send(payload)
 
         expect(res.statusCode).toEqual(404)
         expect(res.type).toEqual(expect.stringContaining('json'))
@@ -103,13 +98,13 @@ describe("POSTS API ENDPOINTS", () => {
         const posts: Post[] = await new PostFactory(Deps.em).create(4)
         const post = posts[3]
 
-        const res = await request(server).delete(`/posts/${post.id}`)
+        const res = await request(Deps.server).delete(`/posts/${post.id}`)
 
         expect(res.statusCode).toEqual(204)
     })
 
     it("DELETE /posts/{post_id} returns 404 if post doesn't exist", async () => {
-        const res = await request(server).delete("/posts/2003")
+        const res = await request(Deps.server).delete("/posts/2003")
 
         expect(res.statusCode).toEqual(404)
         expect(res.type).toEqual(expect.stringContaining('json'))
@@ -122,7 +117,7 @@ describe("POSTS API ENDPOINTS", () => {
             body: "Some lorem I guess?"
         }
 
-        const res = await request(server).post("/posts")
+        const res = await request(Deps.server).post("/posts")
             .send(payload)
 
         expect(res.statusCode).toEqual(201)

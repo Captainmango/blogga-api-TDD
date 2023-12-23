@@ -7,10 +7,7 @@ import { Comment } from '@entities/Comment'
 beforeAll(async () => {
     await init
 
-    Deps.orm.config.set("debug", false)
-
     await Deps.orm.getMigrator().up()
-
     await Deps.orm.config.getDriver().reconnect()
     await Deps.orm.getSchemaGenerator().clearDatabase()
 })

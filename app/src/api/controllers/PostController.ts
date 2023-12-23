@@ -1,6 +1,6 @@
 import * as express from 'express';
 import { Post } from '@entities/Post';
-import { Deps } from '../..';
+import { Deps } from '@main';
 
 export const postController: express.Router = express.Router();
 
@@ -26,14 +26,13 @@ postController.delete("/posts/:id", async function (req: express.Request, res: e
     const postRepository = Deps.em.getRepository(Post)
     const postId = parseInt(req.params.id)
 
-    postRepository.findOneOrFail({id: postId})
-        .then(() => {
-            postRepository.nativeDelete(postId)
-            res.status(204).send()
-        })
-        .catch(error => {
-            res.send(error)
-        })
+    const post = postRepository.getReference(postId)
+
+    if (!post) res.status(404).send()
+
+    postRepository.nativeDelete({id: post.id})
+
+    res.status(204).send()
 })
 
 postController.post("/posts", async function (req: express.Request, res: express.Response): Promise<void> {
@@ -44,8 +43,6 @@ postController.post("/posts", async function (req: express.Request, res: express
         title: postBody.title,
         body: postBody.body
     })
-
-    Deps.em.flush()
 
     res.status(201).send(post)
 })
