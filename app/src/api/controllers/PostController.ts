@@ -3,6 +3,7 @@ import { Post } from '@entities/Post';
 import { Deps } from '@main';
 
 export const postController: express.Router = express.Router();
+type Json = Record<string, any>
 
 // put the index route ("/" only) here
 
@@ -22,17 +23,20 @@ postController.get("/posts", async function (req: express.Request, res: express.
         })
 })
 
-postController.delete("/posts/:id", async function (req: express.Request, res: express.Response): Promise<void> {
+postController.delete("/posts/:id", async function (req: express.Request, res: express.Response): Promise<Json>
+{
     const postRepository = Deps.em.getRepository(Post)
     const postId = parseInt(req.params.id)
 
-    const post = postRepository.getReference(postId)
+    const post = await postRepository.findOne({id: postId})
 
-    if (!post) res.status(404).send()
+    if (!post) {
+        return res.status(404).send({"message": "hello"})
+    }
 
-    postRepository.nativeDelete({id: post.id})
+    await postRepository.nativeDelete({id: post?.id})
 
-    res.status(204).send()
+    return res.status(204).send()
 })
 
 postController.post("/posts", async function (req: express.Request, res: express.Response): Promise<void> {
