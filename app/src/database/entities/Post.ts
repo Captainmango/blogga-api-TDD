@@ -1,44 +1,33 @@
-import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, OneToMany, JoinColumn} from "typeorm";
+import { BaseEntity } from "./BaseEntity";
+import { Collection, Entity, OneToMany, Property } from '@mikro-orm/core';
+
 import { Comment } from "./Comment";
 
 /**
  * Very common pattern here in the modern back end world. Entities or models help us map data to table rows.
- * No need to touch what exists, but you will need to add mapping to comments when you build the relationship. 
+ * No need to touch what exists, but you will need to add mapping to comments when you build the relationship.
  * Do so at the bottom of the file.
  */
-@Entity({
-    name: "posts"
-})
-export class Post {
-
-    @PrimaryGeneratedColumn()
-    id!: number;
-
-    @Column({
-        length: 75
+@Entity({tableName: 'posts'})
+export class Post extends BaseEntity
+{
+    @Property({
+        length: 75,
     })
     title!: string
 
-    @Column({
+    @Property({
         type: "text"
     })
     body!:string
 
-    @OneToMany(() => Comment, comment => comment.post, {
-        cascade: true,
-        eager: true
-    })
-    comments!: Comment[]
+    @OneToMany(() => Comment, comment => comment.post)
+    comments: Collection<Comment> = new Collection<Comment>(this)
 
-    @CreateDateColumn({
-        name: "created_at",
-        type: "datetime"
-    })
-    createdAt!: Date
-
-    @UpdateDateColumn({
-        name: "updated_at",
-        type: "datetime"
-    })
-    updatedAt!: Date
+    constructor(title: string, body: string)
+    {
+        super()
+        this.title = title
+        this.body = body
+    }
 }

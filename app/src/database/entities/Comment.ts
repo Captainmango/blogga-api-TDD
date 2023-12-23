@@ -1,42 +1,26 @@
-import {Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn} from "typeorm";
+import { Collection, Entity, ManyToOne, Property } from '@mikro-orm/core';
+
+import { BaseEntity } from "./BaseEntity";
 import { Post } from "./Post";
 
-@Entity({
-    name: "comments"
-})
-export class Comment {
-
-    @PrimaryGeneratedColumn()
-    id!:number
-
-    @Column({
+@Entity({ tableName: "comments" })
+export class Comment extends BaseEntity
+{
+    @Property({
         name: "name"
     })
     name!:string
 
-    @Column({
+    @Property({
         name: "email_address"
     })
     email!:string
 
-    @Column({
+    @Property({
         name: "content"
     })
     content!:string
 
-    @ManyToOne(() => Post, post => post.comments)
-    @JoinColumn({name: "post_id"})
+    @ManyToOne(() => Post)
     post!: Post
-
-    @CreateDateColumn({
-        name: "created_at",
-        type: "datetime"
-    })
-    createdAt!: Date
-
-    @UpdateDateColumn({
-        name: "updated_at",
-        type: "datetime"
-    })
-    updatedAt!: Date
 }
