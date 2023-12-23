@@ -8,4 +8,11 @@ export default defineConfig({
     dbName: "dev-database.db",
     highlighter: new SqlHighlighter(),
     debug: true,
+    migrations: {
+        tableName: "database_migrations",
+        path: "./migrations",
+        disableForeignKeys: true,
+        allOrNothing: true,
+        emit: 'ts',
+    }
 })

@@ -100,7 +100,8 @@
     "baseUrl": "./",
     "paths": {
       "@entities/*": ["app/src/database/entities/*"],
-      "@repositories/*": ["app/src/database/repositories/*"]
+      "@repositories/*": ["app/src/database/repositories/*"],
+      "@migrations/*": ["app/src/database/migrations/*"],
     },
   },
 }
