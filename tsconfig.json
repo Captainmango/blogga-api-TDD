@@ -102,6 +102,7 @@
       "@entities/*": ["app/src/database/entities/*"],
       "@repositories/*": ["app/src/database/repositories/*"],
       "@migrations/*": ["app/src/database/migrations/*"],
+      "@utils/*": ["app/src/utils/*"]
     },
   },
 }

@@ -1,31 +1,34 @@
 import request from 'supertest'
 import { Express } from 'express-serve-static-core'
 import 'reflect-metadata'
-import { createServer } from '../../../src/utils/server'
-import { factory, tearDownDatabase, useSeeding } from 'typeorm-seeding'
-import connection, { dbEnvs } from '../../../src/utils/db'
-import { Post } from '../../../src/database/entities/Post'
+import { createServer } from '@utils/server'
+import { Post } from '@entities/Post'
+import { Deps, init } from '../../../src/app'
+import { PostFactory } from 'app/src/database/factories/PostFactory'
 
 let server: Express
 
 beforeAll(async () => {
-    await connection.createAll()
-    connection.get(dbEnvs.dev)
-    server = await createServer()
-    await useSeeding()
+    await init
+    Deps.orm.config.set("dbName", "test-database.db")
+    Deps.orm.config.set("debug", false)
+
+    await Deps.orm.config.getDriver().reconnect()
+    await Deps.orm.getSchemaGenerator().clearDatabase()
 })
 
 afterAll(async () => {
-    await tearDownDatabase()
+    await Deps.orm.close(true)
+    Deps.server.close()
 })
 
 beforeEach(async () => {
-    await connection.clear(dbEnvs.dev)
+    Deps.orm.getSchemaGenerator().clearDatabase()
 })
 
 /** Example test for a generic home route */
 it("GET / has an index route", async () => {
-    const res = await request(server).get("/")
+    const res = await request(Deps.server).get("/")
     expect(res.statusCode).toEqual(200);
     expect(res.type).toEqual(expect.stringContaining('json'));
     expect(res.body).toHaveProperty('message');
@@ -34,7 +37,7 @@ it("GET / has an index route", async () => {
 describe("POSTS API ENDPOINTS", () => {
 
     it("GET /posts has an index route", async () => {
-        const posts: Post[] = await factory(Post)().createMany(2)
+        const posts: Post[] = await new PostFactory(Deps.em).create(2)
         const post = posts[0]
         const { createdAt, updatedAt, comments, ...expected } = post
 
@@ -46,7 +49,7 @@ describe("POSTS API ENDPOINTS", () => {
     })
 
     it("GET /posts/{post_id} is able to retrieve a single post", async () => {
-        const post: Post = await factory(Post)().create()
+        const post: Post = await new PostFactory(Deps.em).createOne()
         const { createdAt, updatedAt, comments, ...expected } = post
 
         const res = await request(server).get(`/posts/${post.id}`)
@@ -64,7 +67,7 @@ describe("POSTS API ENDPOINTS", () => {
     })
 
     it("PATCH /posts/{post_id} is able to update a post", async () => {
-        const posts: Post[] = await factory(Post)().createMany(4)
+        const posts: Post[] = await new PostFactory(Deps.em).create(4)
         const post = posts[2]
         const payload = {
             title: "This is the new title",
@@ -93,7 +96,7 @@ describe("POSTS API ENDPOINTS", () => {
     })
 
     it("DELETE /posts/{post_id} is able to delete a post", async () => {
-        const posts: Post[] = await factory(Post)().createMany(4)
+        const posts: Post[] = await new PostFactory(Deps.em).create(4)
         const post = posts[3]
 
         const res = await request(server).delete(`/posts/${post.id}`)

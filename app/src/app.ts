@@ -1,22 +1,22 @@
 import { createServer } from './utils/server'
+import http from 'http'
 import 'reflect-metadata'
-import connection from './utils/db'
+import { EntityManager, EntityRepository, MikroORM, RequestContext } from '@mikro-orm/core';
 
+export const Deps = {} as {
+  server: http.Server,
+  orm: MikroORM,
+  em: EntityManager,
+}
 
-/**
- * Where the magic happens. Not the cleanest way to do this, but it orks for the purposes of this.
- * Bonus marks if you refactor this and make things nicer here.
- */
-connection.create();
+export const init = (async () => {
+  Deps.orm = await MikroORM.init()
+  Deps.em = Deps.orm.em
+  
+  const server = await createServer()
 
-
-
-createServer()
-  .then(server => {
-    server.listen(3000, () => {
-      console.info(`Listening on http://localhost:3000`)
-    })
+  Deps.server = server.listen(3000, () => {
+    console.info(`Listening on http://localhost:3000`)
   })
-  .catch(err => {
-    console.error(`Error: ${err}`)
-  })
+})()
+
