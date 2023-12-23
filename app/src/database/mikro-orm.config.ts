@@ -3,9 +3,13 @@ import { Comment } from '@entities/Comment'
 import { defineConfig } from '@mikro-orm/sqlite'
 import { SqlHighlighter } from '@mikro-orm/sql-highlighter';
 
+const databaseName = process.env.NODE_ENV === "test"
+    ? "test-database.db"
+    : "dev-database.db"
+
 export default defineConfig({
     entities: [Post, Comment],
-    dbName: "test-database.db",
+    dbName: databaseName,
     highlighter: new SqlHighlighter(),
     debug: true,
     allowGlobalContext: true,

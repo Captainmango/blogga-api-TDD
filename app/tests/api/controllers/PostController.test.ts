@@ -11,8 +11,7 @@ let server: Express
 beforeAll(async () => {
     await init
 
-    // Deps.orm.config.set("dbName", "test-database.db")
-    // Deps.orm.config.set("debug", false)
+    Deps.orm.config.set("debug", false)
 
     await Deps.orm.getMigrator().up()
 
@@ -41,7 +40,7 @@ it("GET / has an index route", async () => {
 
 describe("POSTS API ENDPOINTS", () => {
 
-    it.only("GET /posts has an index route", async () => {
+    it("GET /posts has an index route", async () => {
         const posts: Post[] = await new PostFactory(Deps.em).create(2)
         const post = posts[0]
         const { createdAt, updatedAt, comments, ...expected } = post
