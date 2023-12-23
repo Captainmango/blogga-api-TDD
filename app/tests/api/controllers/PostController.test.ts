@@ -2,9 +2,8 @@ import request from 'supertest'
 import { Express } from 'express-serve-static-core'
 import 'reflect-metadata'
 import { Post } from '@entities/Post'
-import { Comment } from '@entities/Comment'
-import { Deps, init } from '../../../src/app'
-import { PostFactory } from '../../../src/database/factories/PostFactory'
+import { Deps, init } from '@main'
+import { PostFactory } from '@factories/PostFactory'
 
 let server: Express
 

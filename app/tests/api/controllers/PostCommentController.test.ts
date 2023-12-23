@@ -1,15 +1,16 @@
 import request from 'supertest'
 import { Post } from '@entities/Post'
 import { Comment } from '@entities/Comment'
-import { init, Deps } from '../../../src/app'
-import { factory } from 'typescript'
+import { init, Deps } from '../../../src'
 import { PostFactory } from 'app/src/database/factories/PostFactory'
 import { CommentFactory } from 'app/src/database/factories/CommentFactory'
 
 beforeAll(async () => {
     await init
-    Deps.orm.config.set("dbName", "test-database.db")
+
     Deps.orm.config.set("debug", false)
+
+    await Deps.orm.getMigrator().up()
 
     await Deps.orm.config.getDriver().reconnect()
     await Deps.orm.getSchemaGenerator().clearDatabase()
@@ -20,8 +21,12 @@ afterAll(async () => {
     Deps.server.close()
 })
 
+afterEach(async () => {
+    await Deps.orm.getSchemaGenerator().clearDatabase()
+})
+
 beforeEach(async () => {
-    Deps.orm.getSchemaGenerator().clearDatabase()
+    Deps.em = Deps.orm.em.fork()
 })
 
 describe("NESTED ROUTES", () => {

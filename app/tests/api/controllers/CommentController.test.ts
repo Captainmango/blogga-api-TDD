@@ -1,25 +1,31 @@
 import request from 'supertest'
 import { Express } from 'express-serve-static-core'
-import { Comment } from '../../../src/database/entities/Comment'
-import { createServer } from '../../../src/utils/server'
-import connection, { dbEnvs } from '../../../src/utils/db'
-import { tearDownDatabase, useSeeding } from 'typeorm-seeding'
+import { Deps, init } from '../../../src'
+import { Comment } from '@entities/Comment'
 
-let server: Express
 
 beforeAll(async () => {
-    await connection.createAll()
-    connection.get(dbEnvs.dev)    
-    server = await createServer()
-    await useSeeding()
+    await init
+
+    Deps.orm.config.set("debug", false)
+
+    await Deps.orm.getMigrator().up()
+
+    await Deps.orm.config.getDriver().reconnect()
+    await Deps.orm.getSchemaGenerator().clearDatabase()
 })
-  
+
 afterAll(async () => {
-    await tearDownDatabase()
+    await Deps.orm.close(true)
+    Deps.server.close()
+})
+
+afterEach(async () => {
+    await Deps.orm.getSchemaGenerator().clearDatabase()
 })
 
 beforeEach(async () => {
-    await connection.clear(dbEnvs.dev)
+    Deps.em = Deps.orm.em.fork()
 })
 
 describe("COMMENTS API ENDPOINTS", () => {

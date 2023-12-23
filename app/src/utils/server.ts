@@ -3,7 +3,7 @@ import { Express } from 'express-serve-static-core'
 import { postCommentController } from '../api/controllers/PostCommentController'
 import { commentController } from '../api/controllers/CommentController'
 import { postController } from '../api/controllers/PostController'
-import { Deps } from '../app'
+import { Deps } from '..'
 import { RequestContext } from '@mikro-orm/core'
 
 
@@ -22,12 +22,19 @@ export async function createServer(): Promise<Express> {
    * server.use(commentController)
    */
 
+  /**
+   * This handler will be invoked if you don't handle errors. Anything that enters the API
+   * and does not return a response to the client will eventually end up here.
+   */
   server.use(
     function onError(err: Error, req: express.Request, res: express.Response, next: express.NextFunction): void
     {
       console.error(err)
-      res.statusCode = 500;
-      res.end
+      res.status(500).send({
+        "error": err.name,
+        "message": err.message,
+        "stackTrace": err.stack
+      })
     }
   )
 

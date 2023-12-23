@@ -2,7 +2,7 @@
 
 ## Premise
 
-So, you want to learn TDD? The best way to learn is by doing. So, imagine you're working at a super cool new start-up called Blogga. Your job is to create an API that is able to serve posts and comments to users. Right now though, you're focusing on the management of posts and comments first, seeing how that is going to be the bread and butter of the product you're shipping.
+So, you want to learn TDD? The best way to learn is by doing. So, imagine you're working at a super cool new start-up called Blogga. Your job is to create an API that is able to serve posts and comments to users. Right now though, you're focusing on the management of Posts and Comments first, seeing how that is going to be the bread and butter of the product you're shipping.
 
 Because Blogga is going to be the next big thing, you NEED to make sure the app you make can scale well. So, you're following some good architecture with your directory structure, expecting things to change rapidly with development. But, it isn't quite enough. You're going to need to test your software. As you know you're going to be iterating quickly, you need to know before your app is live if something is broken. How can your app be the next big thing if it 500s every time someone goes to the wrong place?
 
@@ -14,7 +14,7 @@ The goal of this repo is to create functionality driven by tests, thereby learni
 
  > PLEASE WRITE TESTS BEFORE WRITING CODE
 
-Correct TDD practise is to write a failing test _first_, then get it passing. Ideally, once you've done this, look to refactor the implementation and ensure the code still passes the test in question. The test files are in the tests directory. The repo is complete once all API functionality is built out and the ACs below are met.
+Correct TDD practise is to write a failing test _first_, then get it passing. Ideally, once you've done this, look to refactor the implementation and ensure the code still passes the test in question. The test files are in the tests directory. The repo is complete once all API functionality is built out and the Acceptance Criteria (ACs) below are met.
 
 There is implementation code in PostController.ts for some of the tests in the respective test file to use as a base. However, this is not the best possible implementation and could be refactored to be much leaner. As a **bonus** point, look to refactor the controller functions. All test files have the tests stubbed out. Removing the `.todo` will allow the test to run.
 
@@ -45,9 +45,7 @@ $ npm install
 
 ```
 
-Check the package JSON for the scripts that are available. This repo uses TypeORM-seeding and TypeORM to handle db ops and seeding and Express as the HTTP server.
-
-There is no need to install TypeORM globally for this (all files you will need to complete the repo should exist). But, if you want to expand what is here, this dependency will make things much easier.
+Check the package JSON for the scripts that are available. This repo uses MikroORM to handle db ops and seeding and Express as the HTTP server.
 
 You can run the whole test suite with the command:
 
@@ -65,12 +63,12 @@ $ npm run migrations:run
 
 ```
 
-When you do this, you will see the terminal output the SQL that as ran against the database. The client used is SQLite. It's recommended to use the `firsttris.vscode-jest-runner` extension if you're using VSCode. This will allow you to run your tests in the test file directly shortening the feedback loop. If there are problems installing this, run the tests via the terminal attaching the modifiers on the test functions as explained above.
+When you do this, you will see the terminal output that the migration has been applied to the database. To see the SQL ran, please check the `migrations` folder. The client used is SQLite. It's recommended to use the `firsttris.vscode-jest-runner` or `kavod-io.vscode-jest-test-adapter` extension if you're using VSCode. This will allow you to run your tests in the test file directly shortening the feedback loop. If there are problems installing this, run the tests via the terminal attaching the modifiers on the test functions as explained above.
 
 
 ## Acceptance Criteria
 
-- [ ] All branches of functions are handled within themselves and do not leak data (no unhandled exceptions or unused returned objects)
+- [ ] All branches of functions are handled within themselves and do not leak data (no unhandled exceptions or shared objects)
 - [ ] Separate concerns. Keep the controller functions lean
 
 ### Manage Posts
@@ -87,6 +85,6 @@ When you do this, you will see the terminal output the SQL that as ran against t
 
 
 ## Helpful resources
-* [TypeORM - look here to understand migrations](https://github.com/typeorm/typeorm)
+* [MikroORM - Docs for Repositories and the entity manager](https://mikro-orm.io/docs/entity-manager)
 * [Express - look here to work out how to make controllers and use express](https://expressjs.com/en/guide/routing.html)
 * [Jest - see how to write tests and what matchers are available](https://jestjs.io/docs/using-matchers)
