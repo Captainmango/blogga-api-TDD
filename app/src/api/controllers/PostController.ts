@@ -1,6 +1,6 @@
 import * as express from 'express';
 import { Post } from '@entities/Post';
-import { Deps } from 'app/src/app';
+import { Deps } from '../../app';
 
 export const postController: express.Router = express.Router();
 

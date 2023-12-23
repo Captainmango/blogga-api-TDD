@@ -5,6 +5,8 @@ module.exports = {
   modulePathIgnorePatterns: ["<rootDir>/src/utils"],
   testPathIgnorePatterns: ['./node_modules/'],
   moduleNameMapper: {
-    '@entities/(.*)': '<rootDir>/app/src/database/entities/$1'
-}
+    '@entities/(.*)': '<rootDir>/app/src/database/entities/$1',
+    '@repositories/(.*)': '<rootDir>/app/src/database/repositories/$1',
+    
+  }
 };

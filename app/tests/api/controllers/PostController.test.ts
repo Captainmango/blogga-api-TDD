@@ -3,7 +3,7 @@ import { Express } from 'express-serve-static-core'
 import 'reflect-metadata'
 import { Post } from '@entities/Post'
 import { Deps, init } from '../../../src/app'
-import { PostFactory } from 'app/src/database/factories/PostFactory'
+import { PostFactory } from '../../../src/database/factories/PostFactory'
 
 let server: Express
 
@@ -11,6 +11,8 @@ beforeAll(async () => {
     await init
     Deps.orm.config.set("dbName", "test-database.db")
     Deps.orm.config.set("debug", false)
+
+    await Deps.orm.getMigrator().up()
 
     await Deps.orm.config.getDriver().reconnect()
     await Deps.orm.getSchemaGenerator().clearDatabase()
