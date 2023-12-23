@@ -5,7 +5,7 @@
   "scripts": {
     "test": "jest --verbose",
     "compile": "tsc",
-    "dev": "npx ts-node ./app/src/app.ts",
+    "dev": "npx ts-node -r tsconfig-paths/register ./app/src/app.ts",
     "migration:make": "npx mikro-orm migration:create",
     "migrations:run": "npx mikro-orm migration:up"
   },

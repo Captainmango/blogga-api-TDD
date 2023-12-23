@@ -2,6 +2,7 @@ import request from 'supertest'
 import { Express } from 'express-serve-static-core'
 import 'reflect-metadata'
 import { Post } from '@entities/Post'
+import { Comment } from '@entities/Comment'
 import { Deps, init } from '../../../src/app'
 import { PostFactory } from '../../../src/database/factories/PostFactory'
 
@@ -9,13 +10,15 @@ let server: Express
 
 beforeAll(async () => {
     await init
-    Deps.orm.config.set("dbName", "test-database.db")
-    Deps.orm.config.set("debug", false)
+
+    // Deps.orm.config.set("dbName", "test-database.db")
+    // Deps.orm.config.set("debug", false)
 
     await Deps.orm.getMigrator().up()
 
     await Deps.orm.config.getDriver().reconnect()
-    await Deps.orm.getSchemaGenerator().clearDatabase()
+    await Deps.em.nativeDelete(Post, {})
+    await Deps.em.nativeDelete(Comment, {})
 })
 
 afterAll(async () => {
@@ -23,8 +26,9 @@ afterAll(async () => {
     Deps.server.close()
 })
 
-beforeEach(async () => {
-    Deps.orm.getSchemaGenerator().clearDatabase()
+afterEach(async () => {
+    await Deps.em.nativeDelete(Post, {})
+    await Deps.em.nativeDelete(Comment, {})
 })
 
 /** Example test for a generic home route */
@@ -37,12 +41,12 @@ it("GET / has an index route", async () => {
 
 describe("POSTS API ENDPOINTS", () => {
 
-    it("GET /posts has an index route", async () => {
+    it.only("GET /posts has an index route", async () => {
         const posts: Post[] = await new PostFactory(Deps.em).create(2)
         const post = posts[0]
         const { createdAt, updatedAt, comments, ...expected } = post
 
-        const res = await request(server).get("/posts")
+        const res = await request(Deps.server).get("/posts")
 
         expect(res.statusCode).toEqual(200)
         expect(res.type).toEqual(expect.stringContaining('json'))

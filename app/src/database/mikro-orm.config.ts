@@ -5,9 +5,10 @@ import { SqlHighlighter } from '@mikro-orm/sql-highlighter';
 
 export default defineConfig({
     entities: [Post, Comment],
-    dbName: "dev-database.db",
+    dbName: "test-database.db",
     highlighter: new SqlHighlighter(),
     debug: true,
+    allowGlobalContext: true,
     migrations: {
         tableName: "database_migrations",
         path: "./app/src/database/migrations",

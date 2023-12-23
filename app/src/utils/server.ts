@@ -17,5 +17,15 @@ export async function createServer(): Promise<Express> {
    * for example, using the comment controller would look like:
    * server.use(commentController)
    */
+
+  server.use(
+    function onError(err: Error, req: express.Request, res: express.Response, next: express.NextFunction): void
+    {
+      console.error(err)
+      res.statusCode = 500;
+      res.end
+    }
+  )
+
   return server
 }
