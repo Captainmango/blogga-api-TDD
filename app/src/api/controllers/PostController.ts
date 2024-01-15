@@ -1,55 +1,52 @@
 import * as express from 'express';
-import { getCustomRepository, getRepository } from 'typeorm';
-import { Post } from '../../database/entities/Post';
-import { PostRepository } from '../repositories/PostRepository';
+import { Post } from '@entities/Post';
+import { Deps } from '@main';
+import { Json } from '@utils/server';
 
 export const postController: express.Router = express.Router();
 
 // put the index route ("/" only) here
 
 postController.get("/posts", async function (req: express.Request, res: express.Response): Promise<void> {
-    const postRepository = getCustomRepository(PostRepository)
+    const postRepository = Deps.em.getRepository(Post)
 
-    postRepository.find({
-        order: {
+    const posts = await postRepository.find({}, {
+        orderBy: {
             id: 'ASC'
         }
     })
-    .then(posts => {
+
+    if (posts.length > 0) {
         res.status(200).send(posts)
-    })
-    .catch(error => {
-        res.send(error)
-    })
+    } else {
+        res.status(404).send()
+    }
 })
 
-postController.delete("/posts/:id", async function (req: express.Request, res: express.Response): Promise<void> {
-    const postRepository = getCustomRepository(PostRepository)
-    const postId = req.params.id
-    
-    postRepository.findOneOrFail(postId)
-    .then(() => {
-        postRepository.delete(postId)
-        res.status(204).send()
-    })
-    .catch(error => {
-        res.send(error)
-    })
+postController.delete("/posts/:id", async function (req: express.Request, res: express.Response): Promise<Json>
+{
+    const postRepository = Deps.em.getRepository(Post)
+    const postId = parseInt(req.params.id)
+
+    const post = await postRepository.findOne({id: postId})
+
+    if (!post) {
+        return res.status(404).send({"message": "hello"})
+    }
+
+    await postRepository.nativeDelete({id: post?.id})
+
+    return res.status(204).send()
 })
 
 postController.post("/posts", async function (req: express.Request, res: express.Response): Promise<void> {
-    const postRepository = getCustomRepository(PostRepository)
+    const postRepository = Deps.em.getRepository(Post)
     const postBody = req.body
 
-    const postToSave = new Post()
-    postToSave.title = postBody.title
-    postToSave.body = postBody.body
+    const post = postRepository.create({
+        title: postBody.title,
+        body: postBody.body
+    })
 
-    postRepository.save(postToSave)
-    .then(post => {
-        res.status(201).send(post)
-    })
-    .catch(error => {
-        res.send(error)
-    })
+    res.status(201).send(post)
 })

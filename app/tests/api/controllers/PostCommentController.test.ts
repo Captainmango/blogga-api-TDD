@@ -1,42 +1,44 @@
 import request from 'supertest'
-import { Express } from 'express-serve-static-core'
-import { createServer } from '../../../src/utils/server'
-import connection, { dbEnvs } from '../../../src/utils/db'
-import { useSeeding, tearDownDatabase, factory } from 'typeorm-seeding'
-import { Post } from '../../../src/database/entities/Post'
-import { Comment } from '../../../src/database/entities/Comment'
-import { getCustomRepository } from 'typeorm'
-import { CommentRepository } from '../../../src/api/repositories/CommentRepository'
-
-let server: Express
+import { Post } from '@entities/Post'
+import { Comment } from '@entities/Comment'
+import { init, Deps } from '@main'
+import { PostFactory } from '@factories/PostFactory'
+import { CommentFactory } from '@factories/CommentFactory'
 
 beforeAll(async () => {
-    await connection.createAll()
-    connection.get(dbEnvs.dev)    
-    server = await createServer()
-    await useSeeding()
+    await init
+
+    await Deps.orm.getMigrator().up()
+    await Deps.orm.config.getDriver().reconnect()
+    await Deps.orm.getSchemaGenerator().clearDatabase()
 })
-  
+
 afterAll(async () => {
-    await tearDownDatabase()
+    await Deps.orm.close(true)
+    Deps.server.close()
+})
+
+afterEach(async () => {
+    await Deps.orm.getSchemaGenerator().clearDatabase()
 })
 
 beforeEach(async () => {
-    await connection.clear(dbEnvs.dev)
+    Deps.em = Deps.orm.em.fork()
 })
 
 describe("NESTED ROUTES", () => {
 
     it("PATCH /posts/{post_id}/comments/{comment_id} is able to update a post's comments", async () => {
-        const post: Post = await factory(Post)().create()
-        const comment: Comment = await factory(Comment)().create({ post: post })
+        const post: Post = await new PostFactory(Deps.em).createOne()
+        const comment: Comment = await new CommentFactory(Deps.em).createOne({ post: post })
+
         const payload = {
             name: "Mikey2022",
             content: "Some guff I guess",
             email: "test@test.com"
         }
 
-        const res = await request(server).patch(`/posts/${post.id}/comments/${comment.id}`)
+        const res = await request(Deps.server).patch(`/posts/${post.id}/comments/${comment.id}`)
             .send(payload)
 
         expect(res.statusCode).toEqual(202)

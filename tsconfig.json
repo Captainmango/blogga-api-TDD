@@ -96,6 +96,15 @@
 
     /* Completeness */
     // "skipDefaultLibCheck": true,                      /* Skip type checking .d.ts files that are included with TypeScript. */
-    "skipLibCheck": true                                 /* Skip type checking all .d.ts files. */
-  }
+    "skipLibCheck": true,                                 /* Skip type checking all .d.ts files. */
+    "baseUrl": "./",
+    "paths": {
+      "@entities/*": ["app/src/database/entities/*"],
+      "@repositories/*": ["app/src/database/repositories/*"],
+      "@migrations/*": ["app/src/database/migrations/*"],
+      "@utils/*": ["app/src/utils/*"],
+      "@main": ["app/src/index.ts"],
+      "@factories/*": ["app/src/database/factories/*"]
+    },
+  },
 }
