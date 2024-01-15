@@ -1,6 +1,5 @@
 import request from 'supertest'
-import { Express } from 'express-serve-static-core'
-import { Deps, init } from '../../../src'
+import { Deps, init } from '@main'
 import { Comment } from '@entities/Comment'
 
 

@@ -1,9 +1,9 @@
 import request from 'supertest'
 import { Post } from '@entities/Post'
 import { Comment } from '@entities/Comment'
-import { init, Deps } from '../../../src'
-import { PostFactory } from 'app/src/database/factories/PostFactory'
-import { CommentFactory } from 'app/src/database/factories/CommentFactory'
+import { init, Deps } from '@main'
+import { PostFactory } from '@factories/PostFactory'
+import { CommentFactory } from '@factories/CommentFactory'
 
 beforeAll(async () => {
     await init
