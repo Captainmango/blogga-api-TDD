@@ -14,14 +14,8 @@ export async function createServer(): Promise<Express> {
   server.use((req, res, next) => RequestContext.create(Deps.orm.em, next))
 
   server.use(postController)
-
-
-  /**
-   * Put controllers here. copy the above example replacing the arg for the controller in question
-   *
-   * for example, using the comment controller would look like:
-   * server.use(commentController)
-   */
+  server.use(commentController)
+  server.use(postCommentController)
 
   /**
    * This handler will be invoked if you don't handle errors. Anything that enters the API
