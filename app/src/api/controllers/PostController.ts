@@ -1,9 +1,9 @@
 import * as express from 'express';
 import { Post } from '@entities/Post';
 import { Deps } from '@main';
+import { Json } from '@utils/server';
 
 export const postController: express.Router = express.Router();
-type Json = Record<string, any>
 
 // put the index route ("/" only) here
 

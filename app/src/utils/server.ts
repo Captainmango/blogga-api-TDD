@@ -6,6 +6,7 @@ import { postController } from '../api/controllers/PostController'
 import { Deps } from '..'
 import { RequestContext } from '@mikro-orm/core'
 
+export type Json = Record<string, any>
 
 export async function createServer(): Promise<Express> {
   const server: Express = express()

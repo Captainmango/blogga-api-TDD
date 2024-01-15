@@ -1,11 +1,12 @@
 import { Comment } from '@entities/Comment';
 import { Post } from '@entities/Post';
 import { Deps } from '@main';
+import { Json } from '@utils/server';
 import * as express from 'express';
 
 export const postCommentController: express.Router = express.Router();
 
-postCommentController.patch("/posts/:postId/comments/:commentId", async function (req: express.Request, res: express.Response): Promise<void> {
+postCommentController.patch("/posts/:postId/comments/:commentId", async function (req: express.Request, res: express.Response): Promise<Json> {
     const postRepository = Deps.em.getRepository(Post)
     const commentRepository = Deps.em.getRepository(Comment)
     const { postId, commentId } = req.params
@@ -13,7 +14,6 @@ postCommentController.patch("/posts/:postId/comments/:commentId", async function
 
     postRepository.findOneOrFail({id: parseInt(postId)})
         .then((post) => {
-
             // Looks like we need some logic to check if the commentId sent belongs to the post we found
 
             commentRepository.findOneOrFail({id: parseInt(commentId)})
@@ -24,14 +24,14 @@ postCommentController.patch("/posts/:postId/comments/:commentId", async function
                     })
                     
                     const updatedComment = await commentRepository.findOne(comment.id)
-
-                    res.status(202).send(updatedComment)
+            
+                    return res.status(202).send(updatedComment)
                 })
                 .catch(error => {
-                    res.status(404).send(error)
+                    return res.status(404).send(error.message)
                 })
         })
         .catch(error => {
-            res.send(404).send(error)
+            return res.status(404).send(error.message)
         })
 })
