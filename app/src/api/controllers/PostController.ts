@@ -10,17 +10,17 @@ export const postController: express.Router = express.Router();
 postController.get("/posts", async function (req: express.Request, res: express.Response): Promise<void> {
     const postRepository = Deps.em.getRepository(Post)
 
-    postRepository.find({}, {
+    const posts = await postRepository.find({}, {
         orderBy: {
             id: 'ASC'
         }
     })
-        .then(posts => {
-            res.status(200).send(posts)
-        })
-        .catch(error => {
-            res.send(error)
-        })
+
+    if (posts.length > 0) {
+        res.status(200).send(posts)
+    } else {
+        res.status(404).send()
+    }
 })
 
 postController.delete("/posts/:id", async function (req: express.Request, res: express.Response): Promise<Json>
