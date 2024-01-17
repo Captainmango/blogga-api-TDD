@@ -16,7 +16,7 @@
   "mikro-orm": {
     "useTsNode": true,
     "configPaths": [
-      "./app/src/database/mikro-orm.config.js"
+      "./app/src/database/mikro-orm.config.ts"
     ]
   },
   "dependencies": {
