@@ -1,7 +1,8 @@
-/** @type {import('ts-jest/dist/types').InitialOptionsTsJest} */
 module.exports = {
-  preset: 'ts-jest',
-  testEnvironment: 'node',
+  transform: {
+    "^.+\\.(t|j)s?$": "@swc/jest"
+  },
+  testEnvironment: "node",
   modulePathIgnorePatterns: ["<rootDir>/src/utils"],
   testPathIgnorePatterns: ['./node_modules/'],
   moduleNameMapper: {
