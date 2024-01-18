@@ -3,8 +3,8 @@
   "version": "1.0.0",
   "description": "",
   "scripts": {
-    "test": "jest --verbose",
-    "compile": "tsc",
+    "test": "jest --verbose --detectOpenHandles",
+    "compile-orm": "npx swc ./app/src/database/mikro-orm.config.ts -o ./mikro-orm.config.js",
     "dev": "npx ts-node -r tsconfig-paths/register ./app/src/index.ts",
     "migration:make": "npx mikro-orm migration:create",
     "migrations:run": "npx mikro-orm migration:up",
