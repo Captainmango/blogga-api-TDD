@@ -8,22 +8,24 @@ import { CommentRepository } from '@repositories/CommentRepository';
     tableName: "comments",
     customRepository: () => CommentRepository
 })
-export class Comment extends BaseEntity
-{
+export class Comment extends BaseEntity {
     @Property({
-        name: "name"
+        name: "name",
+        type: "varchar"
     })
-    name!:string
+    name!: string
 
     @Property({
-        name: "email_address"
+        name: "email_address",
+        type: "varchar"
     })
-    email!:string
+    email!: string
 
     @Property({
-        name: "content"
+        name: "content",
+        type: "text"
     })
-    content!:string
+    content!: string
 
     @ManyToOne(() => Post)
     post!: Post

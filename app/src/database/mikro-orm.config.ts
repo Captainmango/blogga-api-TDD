@@ -19,6 +19,7 @@ export default defineConfig({
         emit: 'ts',
         snapshot: false,
     },
+    tsNode: true,
     seeder: {
         path: "./app/src/database/seeders",
         emit: 'ts',
