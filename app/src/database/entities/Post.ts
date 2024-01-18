@@ -11,11 +11,12 @@ import { PostRepository } from "@repositories/PostRepository";
 export class Post extends BaseEntity {
     @Property({
         length: 75,
+        type: "varchar"
     })
     title!: string
 
     @Property({
-        type: "text"
+        type: "text",
     })
     body!: string
 

@@ -10,17 +10,20 @@ import { CommentRepository } from '@repositories/CommentRepository';
 })
 export class Comment extends BaseEntity {
     @Property({
-        name: "name"
+        name: "name",
+        type: "varchar"
     })
     name!: string
 
     @Property({
-        name: "email_address"
+        name: "email_address",
+        type: "varchar"
     })
     email!: string
 
     @Property({
-        name: "content"
+        name: "content",
+        type: "text"
     })
     content!: string
 

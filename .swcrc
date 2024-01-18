@@ -6,18 +6,22 @@
         "dynamicImport": true,
         "decorators": true
     },
-    "target": "esnext",
+    "transform": {
+        "legacyDecorator": true,
+        "decoratorMetadata": true
+    },
+    "target": "es2020",
     "loose": true,
     "externalHelpers": true,
-    "keepClassNames": true
+    "keepClassNames": true,
+    "baseUrl": "./app"
     },
     "minify": false,
     "module": {
         "type": "es6",
         "strict": false,
         "strictMode": false,
-        "lazy": false,
-        "noInterop": false
+        "lazy": false
     }
 }
    
